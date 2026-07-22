@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Erez Portfolio</title>
+    <meta name="description" content="Erez Gartsman. Product manager and tech operator. Case studies in automation, AI systems, and data products, documented process-first." />
+    <style>
+      /* ROOT CAUSE of the "[ Menu ] jumps" bug, found by measurement, not guess:
+         with the shared Google Fonts link using display=swap, the browser is
+         REQUIRED to paint the UA fallback font first and swap to Spline Sans
+         Mono once it loads — that's what display=swap means. The two don't
+         share metrics: "[ Menu ]" at 20px/300/0.2px measures ~89.6px in the
+         fallback stack vs ~97.6px in the real font (measured via canvas
+         .measureText on both), an ~8px gap. The button is right-pinned
+         (right: 16px), so that gap reflows its left edge outward the instant
+         the swap fires — no amount of matching font-size/weight/tracking in
+         critical CSS prevents this, because the MISMATCH IS the fallback
+         family itself, not this rule's properties. (Preloading, added
+         earlier, only makes the swap arrive sooner — display:swap still
+         guarantees a swap happens, so preloading alone can't remove the
+         shift, only shrink its window.)
+         Fixed below with a second, uniquely-named @font-face for this exact
+         file using font-display: optional instead of swap — the button uses
+         'Nav Mono' (see the rule below and Nav.jsx), never touching the
+         shared 'Spline Sans Mono' family the rest of the site still swaps in
+         normally. optional means: if the (preloaded) font isn't in the cache
+         within the browser's short block window, this paint keeps the
+         fallback permanently — no late swap, so nothing to reflow. Same
+         approach for the EG logo isn't applied here since only the button
+         was reported as jumping; ask if the logo needs the same treatment. */
+      @font-face {
+        font-family: 'Nav Mono';
+        src: url('https://fonts.gstatic.com/s/splinesansmono/v13/R70BjzAei_CDNLfgZxrW6wrZOF2WX5KZmA.woff2')
+          format('woff2');
+        font-weight: 300;
+        font-display: optional;
+      }
+
+      /* Critical nav positioning, applied before any external stylesheet. In dev mode Vite injects
+         the app's CSS via a JS-loaded <style> tag rather than a blocking <link>, so there's a real
+         (if brief) window on first paint where the fixed header has no positioning at all and
+         visibly snaps into place once that tag lands — this is what "the menu button jumps" is.
+         Production builds emit a real blocking <link rel="stylesheet"> and never hit this gap, but
+         these few rules make first paint correct in both cases regardless of load order/timing. */
+      #site-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 50;
+      }
+      #site-header nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 24px;
+      }
+      /* Mirror the mobile/desktop show-hide split so the desktop nav links and Contact button
+         (normally hidden below 1024px) don't all render at once and push the menu toggle off
+         the right edge of the viewport during this critical-CSS-only window. */
+      #site-header nav > div,
+      #site-header nav > button:first-of-type {
+        display: none;
+      }
+      #site-header nav > button:last-of-type {
+        position: fixed;
+        top: 16px;
+        right: 16px;
+        z-index: 50;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        min-width: 44px;
+        /* Mirror the button's FINAL typography (text-[20px] leading-[24px]
+           font-light tracking-[0.2px]) so critical CSS and the eventual
+           Tailwind rule agree from the first paint on. 'Nav Mono' first (see
+           the @font-face above): position parity alone doesn't stop the
+           font-swap-driven width shift explained there. */
+        font-family: 'Nav Mono', ui-monospace, monospace;
+        font-size: 20px;
+        line-height: 24px;
+        font-weight: 300;
+        letter-spacing: 0.2px;
+      }
+      @media (min-width: 1024px) {
+        #site-header nav > div {
+          display: flex;
+        }
+        #site-header nav > button:first-of-type {
+          display: inline-flex;
+        }
+        #site-header nav > button:last-of-type {
+          display: none;
+        }
+      }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Preloads the two nav-critical font files at the browser's highest fetch
+         priority, on HTML parse. Still required alongside the 'Nav Mono'
+         @font-face's font-display: optional above — optional only skips a LATE
+         swap; the font still has to actually be in cache in time to be used at
+         all, and preloading is what gets it there fast enough to qualify. Anton
+         SC (the EG logo) is preloaded too but doesn't have a matching optional
+         override yet, since only the Menu button was reported jumping. If Google
+         bumps a font version these URLs 404 harmlessly and behavior just reverts
+         to plain swap. -->
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="https://fonts.gstatic.com/s/splinesansmono/v13/R70BjzAei_CDNLfgZxrW6wrZOF2WX5KZmA.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="https://fonts.gstatic.com/s/antonsc/v1/4UaBrEBBsgltGn71syLhx6g.woff2"
+    />
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Anton+SC&family=Oswald:wght@300;400&family=Sofia+Sans+Condensed:wght@400;500;600;700&family=Spline+Sans+Mono:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

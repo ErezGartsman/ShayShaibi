@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+@theme {
+  /* Calibrated to reference: bg #f6f6f6, ink #101010, achromatic only */
+  --color-paper: #f6f6f6;
+  --color-ink: #101010;
+  --color-grey: #6f6f6f;
+  --color-dim: #a3a3a3;
+  --color-panel: #e9e8e5;
+  --color-dark: #0e0e0e;
+  --color-line: rgba(16, 16, 16, 0.16);
+  --color-line-soft: rgba(16, 16, 16, 0.08);
+
+  /* "Arial Narrow" before the generic sans-serif fallback: Anton SC is ultra-condensed, and a
+     wide generic fallback measured ~22px wider than the loaded font on just the "EG" logo alone
+     (proportionally much more on the large display headlines) — that gap is what reads as a
+     "jump" once the webfont swaps in. A condensed fallback keeps the swap visually near-invisible. */
+  --font-display: "Anton SC", "Anton", "Arial Narrow", sans-serif;
+  --font-condensed: "Oswald", "Arial Narrow", sans-serif;
+  --font-mono: "Spline Sans Mono", ui-monospace, monospace;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-mono);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+/* Firefox — Framer-style dark scrollbar, recolored to the site's own tokens */
+* {
+  scrollbar-width: auto;
+  scrollbar-color: var(--color-grey) var(--color-dark);
+}
+
+/* Webkit (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-grey);
+  border-radius: 6px;
+  border: 3px solid var(--color-dark); /* creates the padding effect around the thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-dim);
+}
+
+/* Hide the scroll rail on horizontal snap sliders without disabling scroll.
+   Plain (unlayered) rule, not a Tailwind @utility — @utility compiles into
+   Tailwind's utilities cascade layer, and an unlayered rule (the `*` scrollbar
+   theme above) always wins over a layered one regardless of specificity, so a
+   layered version of this never actually overrides it. */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Underlined link with thick rule, per reference "CONTACT ME" */
+.rule-link {
+  border-bottom: 2px solid currentColor;
+  padding-bottom: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  /* Snap CSS transitions/animations (rolling links, hover zooms) to their end state */
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
