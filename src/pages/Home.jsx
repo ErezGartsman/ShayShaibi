@@ -213,14 +213,12 @@ const philosophyFactsDesktop = [
   'Details guide every choice I make, ensuring every feature has a reason.',
 ]
 
-// כאן הכנסנו את התמונות במקום הטקסטים
 const aboutImages = [
   { src: '/about-work.jpg', alt: 'Product Planning' },
   { src: '/about-speaking.jpg', alt: 'Community and Speaking' },
   { src: '/about-field.jpg', alt: 'Strategy and Vision' },
 ]
 
-// הפונקציה הזו עכשיו מציגה תמונה במקום את טקסט ה-Placeholder
 // Mobile: aspect-[398/266] w-full max-w-[398px] (398x266 landscape). Desktop: literal
 // w-[286px] h-[191px]. The desktop trio's own container (below) is widened from max-w-3xl
 // to fit 3x286px+gaps exactly — it would otherwise overflow max-w-3xl (768px vs the
@@ -308,7 +306,8 @@ function AboutSection() {
 
       {/* Desktop: headline + philosophy */}
       {/* גם פה, שינינו ל-pl-[30px] כדי שהכותרת הגדולה תזוז שמאלה יחד עם ה-ABOUT ME */}
-      <div className="hidden gap-14 md:mt-12 md:grid lg:grid-cols-[3fr_2fr] lg:items-start md:pl-[22px]">
+      {/* gap reduced 14->8 to pull the philosophy column closer to the headline (desktop only, mobile grid untouched) */}
+      <div className="hidden gap-8 md:mt-12 md:grid lg:grid-cols-[3fr_2fr] lg:items-start md:pl-[22px]">
         <Reveal amount={0.3} className="min-w-0">
           <h3
             className="text-[64px] font-normal uppercase leading-[64px] text-ink"
@@ -331,8 +330,8 @@ function AboutSection() {
             2. lg:-ml-[30px] מושך את הפסקה הספציפית הזו שמאלה (המינוס מושך שמאלה). 
         */}
         <Reveal delay={0.12} amount={0.3} className="lg:mt-[155px] lg:-ml-[183px]">
-          <div 
-            className="space-y-2 text-ink max-w-[540px]"
+          <div
+            className="space-y-2 text-ink max-w-lg"
             style={{
               fontFamily: "'Sofia Sans Condensed', sans-serif",
               fontWeight: 400,

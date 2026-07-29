@@ -47,7 +47,7 @@ const entries = [
       {
         icon: 'flatline',
         title: 'Trips die in the chat',
-        body: 'The group agrees on a destination, the thread goes quiet, and the trip quietly never happens.',
+        body: 'The group agrees on a destination, the thread goes quiet, and the trip quietly never happens after that.',
       },
       {
         icon: 'grind',
@@ -66,48 +66,48 @@ const entries = [
       breakdown: 'Young adults, 21–30 · group trip organizers · frequent solo travelers',
       quotes: [
         {
-          quote: 'I have hundreds of saved TikToks. I never open the folder again. We just end up at the same three bars. All that inspiration, and none of it becomes a plan.',
+          quote: 'I save so many TikToks before a trip, but when I actually get there I barely look at them. I usually remember one or two places and the rest just gets lost.',
           source: 'Interview 04 · trip organizer',
-          insight: 'Saved content is inspiration without infrastructure. The gap is extraction, not discovery.',
-          therefore: 'The Magic URL: paste the saved video, and a multimodal engine extracts every place automatically — no manual re-typing of what\'s already sitting in the footage.',
+          insight: 'People collect travel inspiration faster than they can organize or retrieve it.',
+          therefore: 'The product should turn saved content into usable places and recommendations, without asking users to manually extract information from each video.',
           image: '/portrait-1.png',
         },
         {
-          quote: 'I send links in the chat. Nobody opens them. Somehow the route is still on me. I don\'t want to be the bottleneck anymore.',
+          quote: 'I usually end up being the one who has to figure everything out. I send the links, ask everyone what they want to do, and then somehow I am still the one making the plan.',
           source: 'Interview 09 · group organizer',
-          insight: 'The organizer is the bottleneck. Remove their manual work and the whole group unblocks.',
-          therefore: 'Routing has to sequence itself. If the system clusters and orders the stops the way a local would, no single person has to carry the planning load for the group.',
+          insight: 'Group planning creates an invisible coordination burden for one person.',
+          therefore: 'The product should reduce the organizer’s workload by helping the group turn individual preferences into a shared plan.',
           image: '/portrait-2.png',
         },
         {
-          quote: 'If it takes more than five minutes, I skip it. I just wing it when I land. Spreadsheets become another chore. I want something faster than giving up.',
+          quote: 'If I have to sit down for an hour and plan the whole trip, I probably won’t do it. I would rather save a few places and figure things out when I get there.',
           source: 'Interview 12 · solo traveler',
-          insight: 'The effort budget for planning is minutes, not hours. Anything slower loses to improvisation.',
-          therefore: 'Speed has to beat improvisation, and the plan has to survive a day that doesn\'t go as scheduled — fast enough to win, adaptive enough to still hold up on day three.',
+          insight: 'For some travelers, extensive planning feels like work and competes with the appeal of spontaneity.',
+          therefore: 'The planning experience needs to be fast and lightweight enough to support spontaneous travel rather than trying to eliminate it.',
           image: '/portrait-3.png',
         },
       ],
     },
     solution: [
-      {
-        headline: 'The Magic URL',
-        body: 'Paste a Reel or TikTok link. A multimodal engine watches the video, extracts every location, and returns a complete day-by-day itinerary in seconds.',
-        media: '/smartrip-magic-url.mp4',
-        ratio: 'aspect-[16/9]',
-      },
-      {
-        headline: 'Routing that thinks like a local',
-        body: 'Places are clustered by geography, days sequenced to kill backtracking, and nightlife slotted where it belongs: after dark, near where you already are.',
-        media: '/smartrip-routing.png',
-        ratio: 'aspect-[16/10]',
-      },
-      {
-        headline: 'Schedule-Aware AI',
-        body: 'Generic recommendations are useless if they don’t fit your day. Smartrip’s AI analyzes your existing itinerary—understanding the pace, location, and type of activities you already have planned—to suggest the perfect missing piece exactly when you need it.',
-        media: '/smartrip-ai-suggest.png',
-        ratio: 'aspect-[16/10]',
-      },
-    ],
+    {
+      headline: 'The Magic URL',
+      body: 'Paste a Reel or TikTok link and Smartrip turns the places in the video into a usable itinerary. No screenshots, saving, or manual searching required.',
+      media: '/smartrip-magic-url.mp4',
+      ratio: 'aspect-[16/9]',
+    },
+    {
+      headline: 'Routing that thinks like a local',
+      body: 'Smartrip groups places by location and builds each day around where you already are, reducing unnecessary travel and backtracking.',
+      media: '/smartrip-routing.png',
+      ratio: 'aspect-[16/10]',
+    },
+    {
+      headline: 'Schedule-Aware AI',
+      body: 'Already have plans? Smartrip looks at your itinerary, location, and available time to suggest places that actually fit into your day.',
+      media: '/smartrip-ai-suggest.png',
+      ratio: 'aspect-[16/10]',
+    },
+  ],
   },
   {
     slug: 'nexus',
@@ -124,7 +124,7 @@ const entries = [
     },
     problem: {
       headline: 'THE CHAOS OF SCALING A DIGITAL COMMUNITY',
-      body: "Managing over 75,000 members, daily DMs, and incoming leads across multiple platforms quickly became an administrative nightmare. Without a centralized system, valuable conversations slipped through the cracks, high-value leads were lost in the noise, and community management turned from a strategic growth engine into a reactive, exhausting process. Spreadsheets simply couldn't keep up.",
+      body: "Managing over 75,000 members across multiple platforms made it increasingly difficult to keep track of conversations, leads, and follow-ups. Spreadsheets and fragmented tools couldn't keep up, turning community management into a reactive, manual process.",
       media: '/nexus-problem.png',
     },
     causes: [
@@ -136,12 +136,12 @@ const entries = [
       {
         icon: 'blackhole',
         title: 'Spreadsheets aren\'t people',
-        body: 'Most CRMs measure status, not context. They turn complex human tensions and goals into generic rows in a database, stripping away what the person is actually reaching for.',
+        body: 'Most CRMs measure status, not context. They turn complex human tensions and goals into generic database rows, stripping away what the person is actually seeking.',
       },
       {
         icon: 'switch',
         title: 'Automating the human away',
-        body: 'To survive the volume, most tools force you to automate the human away with cold, robotic broadcasts. You choose between engaging like a robot or drowning in manual work.',
+        body: 'To survive the volume, most tools force you to automate the human away with robotic broadcasts. You choose between engaging like a robot or drowning in manual work.',
       },
     ],
     consequences: [
@@ -167,39 +167,32 @@ const entries = [
       breakdown: 'Data belongs to the machine · Warmth stays with the person',
       quotes: [
         {
-          quote: 'Everything cold — memory, ranking, timing, data — belongs to the machine. Everything warm — judgment, care, the actual conversation — stays with the person. Nexus is that line, drawn cleanly.',
-          source: 'Core Product Principle',
-          insight: 'Most tools automate the human away. Nexus does the opposite.',
-          therefore: 'The system must reason over live data and organize the queue, but it stops there. The actual engagement must remain fundamentally human.',
+          quote: 'There are things I want the system to handle for me, like remembering what happened, prioritizing people and telling me who needs attention. But I do not want it deciding how I talk to someone. That part needs to stay with me.',
+          source: 'Community Manager Interview',
+          insight: 'The value of AI is in reducing cognitive load, not replacing the human relationship.',
+          therefore: 'Nexus should handle memory, prioritization and timing, while leaving judgment and communication to the operator.',
           image: '/field-note-1.jpeg',
         },
         {
-          quote: 'No one here is just a row in a spreadsheet. When you measure relationships by how long a card sits in a column, you lose the person. We needed to measure the only thing that actually matters: how long someone has been waiting on you.',
-          source: 'Community Operations Insight',
-          insight: 'CRMs track status, but community management requires tracking human context and timing.',
-          therefore: 'The interface must shift from a traditional static board to a dynamic, time-aware queue that elevates the most urgent human needs to the top.',
+          quote: 'The problem was not that we had too many people. It was that we did not always know who needed us most. Someone could sit there for days because the system was showing me everything in the same way.',
+          source: 'Community Operations Interview',
+          insight: 'A traditional CRM shows status, but does not show who is actually waiting for a response.',
+          therefore: 'The interface should prioritize people based on urgency, context and time waiting, rather than simply showing a static pipeline.',
           image: '/field-note-2.jpeg',
         },
         {
-          quote: 'We were spending 80% of our time categorizing issues and 20% solving them. The system needed to flip that ratio. Let the AI do the sorting, so the humans can do the connecting.',
-          source: 'Product Strategy Insight',
-          insight: 'Time spent classifying is time not spent connecting — and classification is exactly what a machine is good at.',
-          therefore: 'Nexus automates the sorting entirely, so the operator\'s attention goes to the 20% that actually needs a human: the conversation itself.',
+          quote: 'A lot of our day was spent figuring out what each message was about and where it belonged. By the time we finished sorting everything, we had less time to actually talk to people. That was the part we wanted to change.',
+          source: 'Operations Interview',
+          insight: 'Classification consumes attention that could otherwise be spent on actual conversations.',
+          therefore: 'Nexus should absorb the repetitive work of sorting and organizing, giving the operator more time for the conversations that require human judgment.',
           image: '/portrait-4.jpeg',
         },
       ],
     },
     solution: [
-      /* Section hero: image only, no copy — headline/body are intentionally
-         omitted so SolutionBlock renders just the dashboard directly under the
-         / THE SOLUTION title. */
-      {
-        media: '/nexus-solution-dashboard.png',
-        ratio: 'aspect-[16/10]',
-      },
       {
         headline: 'The Queue: Whose move is it?',
-        body: 'Nexus doesn’t measure how long a card has sat in a column. It measures the only thing that matters — how long someone has been waiting on you. It remembers every interaction and quietly lifts the person who needs you next to the top.',
+        body: 'Nexus doesn’t measure how long a card has sat in a column. It measures the only thing that matters, how long someone has been waiting on you. It remembers every interaction and quietly lifts the person who needs you next to the top.',
         media: '/nexus-queue-interface.png',
         ratio: 'aspect-[16/10]',
       },
@@ -219,7 +212,7 @@ const entries = [
          product UI above by its own Philosophy framing. */
       {
         headline: 'The Philosophy',
-        body: 'The technology is just the vehicle. Here is the core belief behind Nexus and why it was built.',
+        body: 'The technology is just the vehicle. Here is the core belief behind Nexus.',
         media: '/nexus-landing-page.mp4',
         ratio: 'aspect-[16/9]',
       },

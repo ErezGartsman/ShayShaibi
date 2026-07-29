@@ -414,7 +414,7 @@ export default function CaseStudy() {
       <section className="bg-[#fafafa] px-[16px] pt-[48px] pb-12 sm:px-10 md:pb-16 lg:pt-28">
         <div className="grid items-start gap-[24px] lg:grid-cols-[3fr_2fr] lg:gap-14">
           <div>
-            <SectionTitle className="font-display text-sm font-medium uppercase tracking-[0.3em] text-[#101010] text-left">
+            <SectionTitle className="font-display text-xl font-medium uppercase tracking-[0.3em] text-[#101010] text-left">
               The Problem
             </SectionTitle>
             <Reveal delay={0.08}>
