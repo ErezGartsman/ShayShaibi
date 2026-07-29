@@ -4,6 +4,7 @@ import { motion, useScroll, useMotionValueEvent } from 'framer-motion'
 import Reveal from '../components/Reveal.jsx'
 import { projects } from '../data/projects.js'
 import portrait from '../assets/portrait.png'
+import useInViewAutoplay from '../hooks/useInViewAutoplay.js'
 
 const ease = [0.22, 1, 0.36, 1]
 
@@ -87,11 +88,11 @@ function Hero() {
             and its RIGHT edge cuts through the middle of the intro text, so the text
             straddles the box (left half on grey, right half on white). Only the text animates.
           */}
-          <div className="relative max-w-md">
+          <div className="relative max-w-lg">
             <div
               aria-hidden="true"
-              className="absolute -z-10 hidden bg-[#F1F1F1] opacity-90 lg:block"
-              style={{ top: '-2rem', bottom: '-3.5rem', right: '42%', left: '-27rem' }}
+              className="absolute -z-10 hidden bg-[#F1F1F1] lg:block"
+              style={{ inset: '-8rem 50% -1.5rem -26.5rem' }}
             />
             <motion.p
               initial={{ opacity: 0, y: 120 }}
@@ -100,22 +101,18 @@ function Hero() {
               className="relative text-left font-mono leading-relaxed text-ink md:hidden"
               style={{ fontSize: 20, fontWeight: 300 }}
             >
-              Building with <strong className="font-medium">data</strong> and{' '}
-              <strong className="font-medium">intention</strong>. Guided by{' '}
-              <strong className="font-medium">research</strong> and zero patience for{' '}
-              <strong className="font-medium">broken processes</strong>.
+              <strong className="font-medium">Guided by data and research.</strong> I build products that solve real user problems, with zero patience for{' '}
+              <strong className="font-medium">friction or broken processes.</strong>
             </motion.p>
             <motion.p
               initial={{ opacity: 0, y: 120 }}
               animate={scrolled ? { opacity: 1, y: 0 } : { opacity: 0, y: 120 }}
-              transition={{ duration: 1.7, ease }}
+              transition={{ duration: 1.9, ease }}
               className="relative hidden text-left font-mono leading-relaxed text-ink md:block"
-              style={{ fontSize: 20, fontWeight: 300 }}
+              style={{ fontSize: 21, fontWeight: 300 }}
             >
-              Guided by <strong className="font-medium">research</strong>, I turn human{' '}
-              <strong className="font-medium">empathy</strong> into precise,{' '}
-              <strong className="font-medium">data-backed execution</strong>. Zero patience for{' '}
-              <strong className="font-medium">broken processes</strong>.
+              <strong className="font-medium">Guided by data and research.</strong> I build products that solve real user problems, with zero patience for{' '}
+              <strong className="font-medium">friction or broken processes.</strong>
             </motion.p>
           </div>
         </div>
@@ -139,45 +136,63 @@ function Hero() {
 }
 
 function ProjectSection({ project }) {
+  const videoRef = useInViewAutoplay()
+
   return (
     <Link to={`/projects/${project.slug}`} className="group block">
-      <section className="relative flex aspect-video flex-col justify-end overflow-hidden bg-dark px-0 pt-0 pb-0 sm:aspect-auto sm:min-h-screen sm:px-10 sm:pb-8 sm:pt-24 lg:px-16">
+      {/* Section keeps its original compact aspect-video card size (sm+: full
+          screen) — the video is NOT stretched. The clip that was hiding the
+          mobile "View project" link is now scoped to the VIDEO only: the video +
+          gradient live in their own absolute overflow-hidden wrapper, while the
+          section itself is no longer overflow-hidden. So the overlaid
+          title/headline/View-project content can spill past the card's bottom
+          edge without being cropped, which is what made the link vanish before. */}
+      <section className="relative flex aspect-video flex-col justify-end bg-dark px-0 pt-0 pb-0 sm:aspect-auto sm:min-h-screen sm:px-10 sm:pb-8 sm:pt-24 lg:px-16">
 
-        {(project.slug === 'nexus' || project.slug === 'smartrip') && (
-          <video
-            src={`/${project.slug}-video.mp4`}
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="absolute inset-0 z-0 h-full w-full object-cover opacity-60 transition-opacity duration-700 group-hover:opacity-80"
-          />
-        )}
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          {(project.slug === 'nexus' || project.slug === 'smartrip') && (
+            <video
+              ref={videoRef}
+              src={`/${project.slug}-video.mp4`}
+              loop
+              muted
+              playsInline
+              className="h-full w-full object-cover opacity-60 transition-opacity duration-700 group-hover:opacity-80"
+            />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none" />
+        </div>
 
-        <div className="absolute inset-0 z-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none" />
-
-        {/* Mobile (below md): only "View project" is visible, per reference — title/headline are
-            sr-only so the link keeps a meaningful accessible name. md+: title and headline are
-            restored, fully visible, matching the original desktop design.
+        {/* Title/headline now visible at every breakpoint, matching the NAZ
+            reference — previously sr-only below md (only "View project" was
+            visible), which also incidentally gave the wrapping <Link> a
+            distinguishing accessible name; that's preserved just as well now
+            since the text is a normal visible element instead.
             duration/ease slowed to the same luxe glide as the About image row, per Erez's
             "any project cards" instruction — applies at every breakpoint since these Reveals
-            aren't breakpoint-gated themselves (only their sr-only/not-sr-only visibility is). */}
-        <div className="relative z-10 px-6 pb-6 sm:p-0 sm:-mb-2">
+            aren't breakpoint-gated themselves. */}
+        <div className="relative z-10 px-6 pb-4 sm:p-0 sm:-mb-2">
           <Reveal amount={0.3} duration={1} ease={[0.16, 1, 0.3, 1]}>
-            <p className="sr-only font-display uppercase tracking-[0.35em] text-white md:not-sr-only md:mb-5 md:text-xl">
+            <p className="font-display text-xs uppercase tracking-[0.35em] text-white mb-1 md:mb-5 md:text-xl">
               {project.title}
             </p>
           </Reveal>
           <Reveal delay={0.1} amount={0.3} duration={1} ease={[0.16, 1, 0.3, 1]}>
-            <h2 className="sr-only font-display uppercase text-white md:not-sr-only md:text-[clamp(2.6rem,7.5vw,6.5rem)] md:leading-[0.95] md:tracking-[-0.02em]">
+            <h2 className="font-display uppercase text-white text-[clamp(1rem,5vw,1.375rem)] leading-[1.05] tracking-[-0.01em] md:text-[clamp(2.6rem,7.5vw,6.5rem)] md:leading-[0.95] md:tracking-[-0.02em]">
               {project.homeStatement}
             </h2>
           </Reveal>
-          <Reveal delay={0.2} amount={0.3} duration={1} ease={[0.16, 1, 0.3, 1]}>
-            <p className="rule-link mt-2 w-fit font-mono text-sm uppercase tracking-[0.1em] text-white transition-opacity group-hover:opacity-60 sm:mt-10 sm:text-base sm:text-lg">
-              View project ↘
-            </p>
-          </Reveal>
+          {/* No Reveal wrapper here, deliberately: this link sits at the very
+              bottom of the card, and a whileInView reveal's 30% threshold was
+              never met there, so it stayed at opacity 0 AND its initial 36px
+              down-translation pushed it down — invisible on mobile. Rendered
+              directly it's always present. Combined with the video-only clip
+              wrapper above (the section itself is no longer overflow-hidden),
+              the link can neither be clipped nor stuck-hidden. (Title/headline
+              keep their reveals; they sit higher and trigger normally.) */}
+          <p className="rule-link mt-2 w-fit font-mono text-sm uppercase tracking-[0.1em] text-white transition-opacity group-hover:opacity-60 sm:mt-10 sm:text-base sm:text-lg">
+            View project ↘
+          </p>
         </div>
       </section>
     </Link>
@@ -185,18 +200,17 @@ function ProjectSection({ project }) {
 }
 
 const aboutFacts = [
-  'I build products end-to-end, stripping away friction to find what actually works.',
-  'I turn human empathy into precise, data-backed execution.',
-  'Every screen and system must trace back to a real user problem.',
-  'AI works on a leash. Details are the product.',
+  'I blend data analysis with an understanding of human behavior to make decisions.',
+  'I turn complex user feedback into structured, actionable product requirements.',
+  'My focus is on clarity, logic, and stripping away friction.',
+  'Details guide every choice I make, ensuring every feature has a reason.',
 ]
 
-// Desktop-only philosophy copy — sharper, 3 lines (mobile keeps the original 4-sentence
-// aboutFacts above, unchanged).
 const philosophyFactsDesktop = [
-  'I turn human empathy into precise, data-backed execution.',
-  'My process blends structural logic with creative problem-solving.',
-  'AI works on a leash. Details are the product.',
+  'I blend data analysis with an understanding of human behavior to make decisions.',
+  'I turn complex user feedback into structured, actionable product requirements.',
+  'My focus is on clarity, logic, and stripping away friction.',
+  'Details guide every choice I make, ensuring every feature has a reason.',
 ]
 
 // כאן הכנסנו את התמונות במקום הטקסטים
@@ -226,25 +240,25 @@ function ImageSlot({ item }) {
 const aboutColumns = [
   {
     label: 'My Background',
-    body: 'Dual-degree B.A. in Information Science & Communication at Bar-Ilan, fellow of the PM honors program. Five years leading a 75,000-member community. Before that, an IDF tank commander: fast decisions, incomplete information, real consequences.',
+    body: 'Dual-degree B.A. student in Information Science & Communication and Product Management fellow. Five years managing a 75,000-member online community, plus experience as an IDF tank commander under uncertainty.',
   },
   {
     label: 'My Philosophy',
-    body: 'Every product starts with a named friction, not a feature idea. Research defines the requirements, data settles the arguments, and a screen that can\'t be traced to a real problem doesn\'t ship. Simulation beats apology.',
+    body: 'Products start with a named friction, not a feature idea. Research defines the requirements, and data settles the arguments. If a screen can\'t be traced to a real user problem, it doesn\'t ship. Simulation beats apology.',
   },
   {
     label: 'My Toolkit',
-    body: 'PRDs, thematic analysis, A/B testing, benchmarking. SQL, Python, DAX, Power BI. Figma, Jira, Base44. AI everywhere it earns its place, and never unaudited.',
+    body: 'PRDs, market research, A/B testing, and benchmarking. Technical stack includes Python, SQL, Power BI, DAX, HTML, C#, and JavaScript. Tools: Figma, Jira, Base44. I use AI extensively, but always as a tool, never unaudited.',
   },
 ]
 
 // Reverse-chronological: the ongoing "NOW" role leads, then the rest by start year descending
 // (2024 -> 2023 -> 2018). Education entry removed per Erez's request.
 const experience = [
-  ['JULY 2026 — NOW', 'Clinical Product & Deployment (Ambient AI)', 'ARC Innovation (Sheba Medical Center). Orchestrating the deployment of an AI Ambient Listening platform (Scribe MD) across 14 clinics. Leading on-site integration, prompt engineering, and product refinement based on direct clinical feedback.'],
-  ['2021 — 2026', 'Content Creator & Community Manager', 'Self-employed. Grew a complex community of over 75,000 members. Converted qualitative feedback and A/B test data from thousands of daily user interactions into precise content strategies that maximized engagement.'],
-  ['2024 — 26', 'PR Specialist & Researcher', 'Maya Karvat Communications. Messaging strategy and qualitative market research for over 15 distinct brands.'],
-  ['2023 — 24', 'Creative Lead & Content Strategist', 'Alfi Productions. Led over 20 creative projects from initial concept to final launch.'],
+  ['JULY 2026 — NOW', 'Product Management Practicum (Ambient AI)', 'ARC Innovation (Sheba Medical Center). Participating in the deployment of an AI Ambient Listening platform across hospital clinics. Assisting with product testing, prompt refinement, and system evaluation based on clinical workflows.'],
+  ['2021 — NOW', 'Digital Content Creator & Community Manager', 'Self-employed. Managed an online community of over 75,000 members focused on relationship dynamics and personal growth. Translated daily user interactions and A/B testing into data-driven content strategies that maximized engagement.'],
+  ['2024 — 2026', 'PR Specialist & Market Researcher', 'Maya Karvat Communications. Conducted qualitative market research and developed messaging strategies for over 15 distinct brands.'],
+  ['2023 — 2024', 'Creative Lead & Content Strategist', 'Alfi Productions. Led over 20 creative projects from initial concept through execution and final launch.'],
 ]
 
 function AboutSection() {
@@ -265,10 +279,10 @@ function AboutSection() {
           <Reveal amount={0.3}>
             <div style={{ fontFamily: "'Sofia Sans Condensed', sans-serif" }}>
               <p className="m-0 text-[32px] font-normal uppercase leading-[32px] tracking-[1.6px] text-ink">
-                Product is not
+                Product management 
               </p>
               <p className="m-0 text-[32px] font-normal uppercase leading-[32px] tracking-[1.6px] text-ink">
-                what I do - it's how I decode the world
+                is about solving the right problems
               </p>
             </div>
           </Reveal>
@@ -303,11 +317,11 @@ function AboutSection() {
               letterSpacing: '1.6px',
             }}
           >
-            Product is not
+            Product management 
             <br className="hidden md:block" />
-            <span className="whitespace-nowrap">what I do - it's how I decode</span>
+            <span className="whitespace-nowrap">is about solving the right</span>
             <br className="hidden md:block" />
-            the world
+            problems
           </h3>
         </Reveal>
         
@@ -317,7 +331,16 @@ function AboutSection() {
             2. lg:-ml-[30px] מושך את הפסקה הספציפית הזו שמאלה (המינוס מושך שמאלה). 
         */}
         <Reveal delay={0.12} amount={0.3} className="lg:mt-[155px] lg:-ml-[183px]">
-          <div className="space-y-1 font-mono text-[16px] leading-relaxed text-ink">
+          <div 
+            className="space-y-2 text-ink max-w-[540px]"
+            style={{
+              fontFamily: "'Sofia Sans Condensed', sans-serif",
+              fontWeight: 400,
+              fontSize: '20px',
+              letterSpacing: '1.6px',
+              lineHeight: '26px',
+            }}
+          >
             {philosophyFactsDesktop.map((f) => (
               <p key={f}>{f}</p>
             ))}
@@ -344,7 +367,7 @@ function AboutSection() {
         ))}
       </div>
 
-      {/* Mobile+tablet: strict Title -> Text -> Image sequence per column, through lg: (see note above) */}
+{/* Mobile+tablet: strict Title -> Text -> Image sequence per column, through lg: (see note above) */}
       <div className="mt-14 space-y-10 lg:hidden">
         {aboutColumns.map((c, i) => (
           <div key={c.label}>
@@ -352,7 +375,19 @@ function AboutSection() {
               <h3 className="mb-4 font-sans text-xl text-dim">{c.label} ↘</h3>
             </Reveal>
             <Reveal amount={0.3}>
-              <p className="font-mono text-base leading-relaxed text-ink">{c.body}</p>
+              <p 
+                className="text-ink"
+                style={{
+                  fontFamily: '"Spline Sans Mono", monospace',
+                  fontWeight: 400,
+                  fontSize: '18px', // שים לב: במובייל שמתי 18px שיראה נעים בעין, אבל אם בא לך ענק כמו בדסקטופ אפשר לשנות ל-'20px'
+                  lineHeight: '1.2em',
+                  letterSpacing: '0.01em',
+                  color: '#101010',
+                }}
+              >
+                {c.body}
+              </p>
             </Reveal>
             <Reveal amount={0.3} className="mt-6 block">
               <ImageSlot item={aboutImages[i]} />
@@ -361,15 +396,25 @@ function AboutSection() {
         ))}
       </div>
 
-      {/* Desktop: three columns side by side, no images (images shown separately above).
-          Gated at lg: to stay synced with the image trio and the mobile/tablet block above —
-          otherwise this and the Title->Text->Image block would both render in the 768-1023 range. */}
+      {/* Desktop: three columns side by side */}
       <div className="mt-24 hidden gap-14 lg:grid lg:grid-cols-3 lg:gap-10">
         {aboutColumns.map((c, i) => (
           <Reveal key={c.label} delay={i * 0.08}>
             <div>
               <h3 className="mb-8 font-sans text-xl text-dim sm:text-2xl">{c.label} ↘</h3>
-              <p className="font-mono text-base leading-relaxed text-ink">{c.body}</p>
+              <p 
+                className="text-ink"
+                style={{
+                  fontFamily: '"Spline Sans Mono", monospace',
+                  fontWeight: 400,
+                  fontSize: '20px',
+                  lineHeight: '1.2em',
+                  letterSpacing: '0.01em',
+                  color: '#101010',
+                }}
+              >
+                {c.body}
+              </p>
             </div>
           </Reveal>
         ))}

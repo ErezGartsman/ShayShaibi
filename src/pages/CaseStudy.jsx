@@ -7,17 +7,66 @@ import MediaPlaceholder from '../components/MediaPlaceholder.jsx'
 import Doodle from '../components/Doodle.jsx'
 import { QuoteCard } from '../components/QuoteCard.jsx'
 import { getProject, nextProject } from '../data/projects.js'
+import useInViewAutoplay from '../hooks/useInViewAutoplay.js'
 
 const ease = [0.22, 1, 0.36, 1]
 
-/* NAZ-style CSS phone bezel — only used for Smartrip, whose captured media is
-   genuinely phone-shaped (~0.46 aspect, matching 9:19.5 almost exactly).
-   Nexus's media is landscape dashboard/browser footage; forcing that into this
-   vertical frame with object-cover would crop out most of the image, so this
-   frame is opted into per-project rather than applied to every case study. */
-const phoneFrameClass =
-  'relative mx-auto w-full max-w-[280px] md:max-w-[320px] aspect-[9/19.5] rounded-[50px] md:rounded-[70px] border-[12px] md:border-[15px] border-white shadow-[inset_-4px_-9px_7px_0px_rgba(0,0,0,0.19),1px_4px_24px_0px_rgba(0,0,0,0.35)] bg-white overflow-hidden flex-shrink-0'
-const phoneFrameMediaClass = 'w-full h-full object-cover rounded-[35px] md:rounded-[55px]'
+/* Pure-CSS device frame (the "NAZ" method) — replaces the photoreal
+   phone-mockup-14.png + absolute-percentage screen math, which never held up
+   across the media's varied aspect ratios (0.46–0.58). A white bezel reads as
+   a phone body, media fills the inner area edge-to-edge with object-cover, so
+   there is ZERO dead space at any size. aspect-[9/19.5] (~0.4615) matches 3 of
+   the 4 Smartrip clips almost exactly; only the one wider 0.58 clip loses a
+   sliver off the sides. Used only for Smartrip, whose media is phone-shaped.
+   w-[85vw] max-w-[320px]: scales to the viewport (a fixed 280px cap left huge
+   dead margins on real phones), capped at 320px so it doesn't overgrow.
+   THIRD architecture, not a refinement of the second: neither border-[12px]
+   (bug: Safari miscomputes height:100% against the border-box under
+   aspect-ratio, video overran the bottom border) nor plain padding (bug:
+   Safari's aspect-ratio + padding-box height math failed the same way) held
+   on real iOS. Both share one root cause — Safari deriving the inner box's
+   height from the OUTER element's aspect-ratio-computed box. Absolute inset
+   coordinates (top/bottom/left/right in px) sidestep that derivation
+   entirely: the inner box's height is computed directly from the outer
+   element's actual rendered height minus 12px top and bottom, a plain
+   positioned-box calculation with no aspect-ratio/border/padding box-model
+   step for Safari to get wrong. aspectRatio lives on the OUTER box only (as
+   an inline style, matching this exact fix), which just needs a size to
+   anchor the absolute children to, not to feed any inner-box math.
+   WebKit mask-image + a hard clip-path directly on the media element:
+   belt-and-suspenders against iOS Safari's separate, long-documented bug
+   where overflow:hidden + border-radius alone does not reliably clip a
+   <video> to the radius — the mask forces Safari's masking compositing path,
+   and the inline clip-path forces a second, independent hardware clip
+   directly on the video/img layer itself. translateZ(0) promotes the inner
+   box to its own GPU compositing layer, which the mask/clip rely on. */
+function PhoneFrame({ children }) {
+  return (
+    <div
+      className="relative mx-auto w-[85vw] max-w-[320px] md:max-w-[320px] flex-shrink-0 rounded-[2.75rem] bg-white shadow-xl"
+      style={{ aspectRatio: '9/19.5' }}
+    >
+      <div
+        className="absolute top-[12px] bottom-[12px] left-[12px] right-[12px] rounded-[2rem] overflow-hidden bg-black"
+        style={{
+          WebkitMaskImage: '-webkit-radial-gradient(white, black)',
+          transform: 'translateZ(0)',
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  )
+}
+const phoneMediaClass = 'absolute inset-0 h-full w-full object-cover'
+/* Applied alongside phoneMediaClass on every media element inside a
+   PhoneFrame: the hard clip-path described above. 32px matches the inner
+   box's own rounded-[2rem]. -webkit- prefixed version first since this is
+   specifically an iOS Safari fix. */
+const phoneMediaStyle = {
+  clipPath: 'inset(0 round 32px)',
+  WebkitClipPath: 'inset(0 round 32px)',
+}
 
 /* Desktop-only carousel chrome: one pair for the whole peek carousel, not one
    per card — QuoteCard's own small glass arrows stay mobile-only (md:hidden),
@@ -73,12 +122,85 @@ function TriadGrid({ items = [] }) {
   )
 }
 
+/* Extracted so each block's videos get their own useInViewAutoplay ref —
+   hooks can't be called directly inside the .map() below. */
+function SolutionBlock({ project, block }) {
+  const phoneVideoRef = useInViewAutoplay()
+  const naturalVideoRef = useInViewAutoplay()
+
+  return (
+    <div>
+      {/* headline/body render only when the block actually has copy — a block
+          can be media-only (e.g. Nexus's section-hero dashboard). Rendering the
+          h3/p unconditionally would leave empty elements still carrying their
+          own mt-4/md:mt-6 spacing, pushing the image down for no visible
+          reason. Classes below are untouched. */}
+      {block.headline && (
+        <Reveal>
+          <h3 className="text-center font-sans text-xl font-semibold text-ink sm:text-2xl">
+            {block.headline}
+          </h3>
+        </Reveal>
+      )}
+      {block.body && (
+        <Reveal delay={0.08}>
+          <p className="mx-auto mt-4 max-w-2xl text-center font-sans text-base leading-relaxed text-grey sm:text-lg md:mt-6">
+            {block.body}
+          </p>
+        </Reveal>
+      )}
+      {/\.mp4$/i.test(block.media) ? (
+        <Reveal className="mt-10">
+          {project.slug === 'smartrip' ? (
+            <PhoneFrame>
+              <video
+                ref={phoneVideoRef}
+                src={block.media}
+                loop
+                muted
+                playsInline
+                preload="auto"
+                className={phoneMediaClass}
+                style={phoneMediaStyle}
+              />
+            </PhoneFrame>
+          ) : (
+            <video
+              ref={naturalVideoRef}
+              src={block.media}
+              loop
+              muted
+              playsInline
+              className="w-full h-auto rounded-lg shadow-xl"
+            />
+          )}
+        </Reveal>
+      ) : /\.(jpe?g|png)$/i.test(block.media) ? (
+        <Reveal className="mt-10">
+          {project.slug === 'smartrip' ? (
+            <PhoneFrame>
+              <img src={block.media} alt="" className={phoneMediaClass} style={phoneMediaStyle} />
+            </PhoneFrame>
+          ) : (
+            <img src={block.media} alt="" className="w-full h-auto rounded-lg shadow-xl" />
+          )}
+        </Reveal>
+      ) : (
+        <MediaPlaceholder label={block.media} ratio={block.ratio} className="mt-10" />
+      )}
+    </div>
+  )
+}
+
 export default function CaseStudy() {
   const { slug } = useParams()
   const project = getProject(slug)
   if (!project) return <Navigate to="/" replace />
 
   const next = nextProject(slug)
+
+  const problemVideoPhoneRef = useInViewAutoplay()
+  const problemVideoNaturalRef = useInViewAutoplay()
 
   /* Mobile research slider: infinite loop via a one-card buffer cloned onto
      each end — [lastClone, ...real, firstClone] — so both arrow-taps and raw
@@ -220,7 +342,7 @@ export default function CaseStudy() {
   return (
     <article key={slug}>
       {/* ── Hero: full-bleed video plane, title + meta bottom-anchored ─── */}
-      <header className="relative flex h-[100vh] w-full flex-col items-center justify-end overflow-clip px-[16px] pt-[142px] pb-[60px] md:px-[30px] md:pb-[72px] xl:px-[80px]">
+      <header className="relative flex h-[80svh] w-full flex-col items-center justify-end overflow-clip px-[16px] pt-[142px] pb-[60px] md:min-h-screen md:px-[30px] md:pb-[72px] xl:px-[80px]">
         <div
           className="absolute inset-0 z-0 flex items-center justify-center"
           style={{ transform: 'perspective(1200px) rotateY(180deg)' }}
@@ -231,6 +353,9 @@ export default function CaseStudy() {
             loop
             muted
             playsInline
+            ref={(el) => {
+              if (el) el.muted = true
+            }}
             className="h-full w-full bg-transparent object-cover object-center"
           />
         </div>
@@ -286,17 +411,19 @@ export default function CaseStudy() {
       </header>
 
       {/* ── / THE PROBLEM ─────────────────────────────────────────────── */}
-      <section className="px-[16px] pt-[48px] sm:px-10 lg:pt-28">
+      <section className="bg-[#fafafa] px-[16px] pt-[48px] pb-12 sm:px-10 md:pb-16 lg:pt-28">
         <div className="grid items-start gap-[24px] lg:grid-cols-[3fr_2fr] lg:gap-14">
           <div>
-            <SectionTitle align="left">The Problem</SectionTitle>
+            <SectionTitle className="font-display text-sm font-medium uppercase tracking-[0.3em] text-[#101010] text-left">
+              The Problem
+            </SectionTitle>
             <Reveal delay={0.08}>
-              <h3 className="mt-4 max-w-2xl font-display text-[24px] font-normal uppercase leading-[33.6px] tracking-[-0.24px] text-[#404040] md:mt-6">
+              <h3 className="mt-4 max-w-2xl font-display text-3xl font-bold leading-tight tracking-[-0.24px] text-ink md:mt-6 md:text-4xl">
                 {project.problem.headline}
               </h3>
             </Reveal>
             <Reveal delay={0.15}>
-              <p className="mt-4 max-w-xl font-mono text-[14px] font-light leading-[16.8px] tracking-normal text-[#404040] md:mt-6">
+              <p className="mt-4 max-w-3xl font-mono text-lg font-light leading-relaxed tracking-normal text-grey md:mt-6 md:text-xl">
                 {project.problem.body}
               </p>
             </Reveal>
@@ -304,21 +431,22 @@ export default function CaseStudy() {
           {/\.mp4$/i.test(project.problem.media) ? (
             <Reveal className="lg:mt-4">
               {project.slug === 'smartrip' ? (
-                <div className={phoneFrameClass}>
+                <PhoneFrame>
                   <video
+                    ref={problemVideoPhoneRef}
                     src={project.problem.media}
-                    autoPlay
                     loop
                     muted
                     playsInline
                     preload="auto"
-                    className={phoneFrameMediaClass}
+                    className={phoneMediaClass}
+                    style={phoneMediaStyle}
                   />
-                </div>
+                </PhoneFrame>
               ) : (
                 <video
+                  ref={problemVideoNaturalRef}
                   src={project.problem.media}
-                  autoPlay
                   loop
                   muted
                   playsInline
@@ -329,9 +457,9 @@ export default function CaseStudy() {
           ) : /\.(jpe?g|png)$/i.test(project.problem.media) ? (
             <Reveal className="lg:mt-4">
               {project.slug === 'smartrip' ? (
-                <div className={phoneFrameClass}>
-                  <img src={project.problem.media} alt="" className={phoneFrameMediaClass} />
-                </div>
+                <PhoneFrame>
+                  <img src={project.problem.media} alt="" className={phoneMediaClass} style={phoneMediaStyle} />
+                </PhoneFrame>
               ) : (
                 <img
                   src={project.problem.media}
@@ -426,57 +554,10 @@ export default function CaseStudy() {
       <section className="px-[16px] pt-16 pb-32 sm:px-10 md:pt-24">
         <SectionTitle>The Solution</SectionTitle>
         <div className="mx-auto mt-6 max-w-5xl space-y-16 md:mt-8 md:space-y-24">
+          {/* keyed on media, not headline: a media-only block has no headline,
+              which would make the key undefined and collide across blocks. */}
           {(project.solution ?? []).map((block) => (
-            <div key={block.headline}>
-              <Reveal>
-                <h3 className="text-center font-sans text-xl font-semibold text-ink sm:text-2xl">
-                  {block.headline}
-                </h3>
-              </Reveal>
-              <Reveal delay={0.08}>
-                <p className="mx-auto mt-4 max-w-2xl text-center font-sans text-base leading-relaxed text-grey sm:text-lg md:mt-6">
-                  {block.body}
-                </p>
-              </Reveal>
-              {/\.mp4$/i.test(block.media) ? (
-                <Reveal className="mt-10">
-                  {project.slug === 'smartrip' ? (
-                    <div className={phoneFrameClass}>
-                      <video
-                        src={block.media}
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        preload="auto"
-                        className={phoneFrameMediaClass}
-                      />
-                    </div>
-                  ) : (
-                    <video
-                      src={block.media}
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      className="w-full h-auto rounded-lg shadow-xl"
-                    />
-                  )}
-                </Reveal>
-              ) : /\.(jpe?g|png)$/i.test(block.media) ? (
-                <Reveal className="mt-10">
-                  {project.slug === 'smartrip' ? (
-                    <div className={phoneFrameClass}>
-                      <img src={block.media} alt="" className={phoneFrameMediaClass} />
-                    </div>
-                  ) : (
-                    <img src={block.media} alt="" className="w-full h-auto rounded-lg shadow-xl" />
-                  )}
-                </Reveal>
-              ) : (
-                <MediaPlaceholder label={block.media} ratio={block.ratio} className="mt-10" />
-              )}
-            </div>
+            <SolutionBlock key={block.media} project={project} block={block} />
           ))}
         </div>
       </section>

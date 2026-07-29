@@ -35,6 +35,52 @@ export default function Nav() {
 
   useEffect(() => setMenuOpen(false), [pathname, hash])
 
+  /* Homepage frost is scroll-gated: transparent at the very top so the hero
+     shows through, frosted once the user scrolls past it. No-op on project
+     pages (frosted from load regardless). */
+  const [isScrolled, setIsScrolled] = useState(false)
+  useEffect(() => {
+    const onScroll = () => setIsScrolled(window.scrollY > 20)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  /* EVERYTHING below is mobile/tablet only. Desktop (lg:) is restored to its
+     original untouched behaviour by lg: classes on the header/nav (blend on the
+     HEADER, translateZ hint, white text) and by lg:hidden on the frost layer —
+     none of the mobile layering reaches lg+.
+     Mobile homepage nav text:
+     - at the very top (not scrolled): text-ink, a DETERMINISTIC dark — not
+       relying on mix-blend-difference happening to invert white→black over the
+       light hero (which was rendering as plain white for real iOS Safari).
+     - once scrolled: text-white + mix-blend-difference, so it inverts on its
+       own — dark over the light About section, white over the dark project
+       videos.
+     Mobile project pages: solid white (their one dark hero + frosted bar needs
+     no inversion).
+     Frosted bar AND the blend coexist because they're layered: the blur is on
+     its own absolutely-positioned frost <div> behind the text, the text carries
+     the blend on top — separate compositing subtrees. For the nav-level blend
+     to reach the page the mobile header must NOT be isolated, so the translateZ
+     compositing hint lives on the frost layer (where the backdrop-filter is),
+     not the header. */
+  const isProjectPage = pathname.startsWith('/projects')
+  const frostVisible = isProjectPage || isScrolled
+  /* max-lg: on every mobile text class so it CANNOT leak into desktop. An
+     unprefixed text-ink here was outranking the nav's lg:text-white at lg+
+     (equal specificity, and the base utility won), flipping the desktop text
+     colour. Scoping the mobile state to max-lg: leaves lg+ purely to the
+     lg:text-white / lg:mix-blend-normal desktop classes. */
+  const mobileNavText = isProjectPage
+    ? 'max-lg:text-white'
+    : isScrolled
+      ? 'max-lg:text-white max-lg:mix-blend-difference'
+      : 'max-lg:text-ink'
+  const frostLayerClass = frostVisible
+    ? 'bg-black/5 backdrop-blur-md border-white/10'
+    : 'bg-transparent backdrop-blur-none border-transparent'
+
   /* Scroll lock while the overlay is open */
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : ''
@@ -48,31 +94,32 @@ export default function Nav() {
 
   return (
     <>
-      {/* Mobile glass restored to its true original — bg-white/25 backdrop-blur-md,
-          the very first background this header ever had, from before this whole
-          nav saga started. (bg-black/15, introduced later in that same saga as a
-          first-pass fix, was NOT this; it just happened to be what was in place
-          right before the bg-ink/60 mistake, which is as far back as "revert"
-          could reasonably be read a few turns ago.) Desktop stays fully
-          transparent, unchanged.
-          What's deliberately NOT restored alongside it: the original pairing was
-          text-ink + mix-blend-normal, which is the actual bug that started this
-          saga — dark text is invisible over a dark hero video. mix-blend-difference
-          (kept here, uniform across breakpoints) is the real fix for that, and
-          works fine layered under any background, light or none, so both goals
-          — the original delicate glass AND correct text contrast everywhere —
-          hold at once.
-          Compositing hints unchanged: translateZ(0) + backface-visibility: hidden
-          keep this fixed+blended element on its own GPU layer, which is what
-          stops it from visibly clipping/detaching during momentum scroll on
-          mobile. Still not using isolation: isolate — that would contain the
-          blend to this subtree and stop the text from inverting against the
-          page scrolling underneath, breaking the effect entirely. */}
+      {/* Mobile/tablet: the header is a bare transparent, NON-isolated box so
+          the nav's mix-blend-difference can reach the page (an isolating
+          ancestor would trap it — the old "mobile text stuck white" bug).
+          Desktop (lg:) is the ORIGINAL, untouched treatment, restored verbatim:
+          translateZ + backface compositing hints, transparent bg/blur/border,
+          and mix-blend-difference ON THE HEADER (not the nav). Because these are
+          all lg:-scoped, none of the mobile layering leaks into desktop. */}
       <header
         id="site-header"
-        className="fixed inset-x-0 top-0 z-50 bg-black/15 backdrop-blur-xs mix-blend-difference [transform:translateZ(0)] [backface-visibility:hidden] lg:bg-transparent lg:backdrop-blur-none"
+        className="fixed inset-x-0 top-0 z-50 transition-all duration-300 ease-in-out lg:[transform:translateZ(0)] lg:[backface-visibility:hidden] lg:bg-transparent lg:backdrop-blur-none lg:border-transparent lg:mix-blend-difference"
       >
-        <nav className="flex items-center justify-between px-6 py-6 text-white sm:px-10">
+        {/* Frosted-glass layer — MOBILE/TABLET ONLY (lg:hidden). Its own
+            compositing subtree (backdrop-filter + translateZ + backface) sitting
+            behind the nav text at -z-10 so the blur and the text's
+            mix-blend-difference never collide. Scroll-gated on the homepage,
+            always-on for project pages. Removed entirely at lg+, so desktop has
+            no frost layer at all — exactly as before. */}
+        <div
+          aria-hidden="true"
+          className={`pointer-events-none absolute inset-0 -z-10 border-b transition-all duration-300 ease-in-out [transform:translateZ(0)] [backface-visibility:hidden] lg:hidden ${frostLayerClass}`}
+        />
+        {/* lg:mix-blend-normal turns the mobile nav-level blend OFF at desktop,
+            where the blend lives on the header instead (original behaviour). */}
+        <nav
+          className={`flex items-center justify-between px-6 py-6 sm:px-10 transition-colors duration-300 lg:text-white lg:mix-blend-normal ${mobileNavText}`}
+        >
           <Link
             to="/"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -117,10 +164,16 @@ export default function Nav() {
               (index.html) is a dedicated font-display: optional face for this exact file, so the
               label never does the swap Spline Sans Mono's own font-display: swap guarantees —
               that swap, not a positioning gap, was the real source of the "jump" (measured ~8px
-              width difference between the fallback font and the real one for this text). */}
+              width difference between the fallback font and the real one for this text).
+              top-[22px], not top-4: the EG logo is 40px tall (leading-none) inside the nav's
+              py-6 (24px) padding, so its vertical center sits at 24+20=44px from the header's
+              top edge. This button is 44px tall (min-h-[44px]), so centering IT on that same
+              44px mark means its own top has to start at 44-22=22px, not the nav's raw
+              padding value — those aren't the same number since the two elements aren't the
+              same height. */}
           <button
             onClick={() => setMenuOpen(true)}
-            className="fixed right-4 top-4 z-50 flex min-h-[44px] min-w-[44px] items-center justify-center p-2 text-[20px] leading-[24px] font-light tracking-[0.2px] normal-case lg:hidden"
+            className="fixed right-4 top-[22px] z-50 flex min-h-[44px] min-w-[44px] items-center justify-center p-2 text-[20px] leading-[24px] font-light tracking-[0.2px] normal-case lg:hidden"
             style={{ fontFamily: "'Nav Mono', ui-monospace, monospace" }}
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"

@@ -10,7 +10,7 @@ const entries = [
     slug: 'smartrip',
     n: '02',
     title: 'SMARTRIP',
-    homeStatement: 'Where saved videos become itineraries',
+    homeStatement: 'ACTIONABLE TRAVEL PLANS FROM SAVED VIDEOS',
     homeMedia: 'FULL-BLEED SHOWREEL — MAGIC URL SCREEN RECORDING',
     question: 'What if a saved video could plan the trip?',
     heroMedia: 'FULL-BLEED VIDEO — MAGIC URL: PASTE TO ITINERARY',
@@ -102,9 +102,9 @@ const entries = [
         ratio: 'aspect-[16/10]',
       },
       {
-        headline: 'Plans that survive reality',
-        body: 'Rain starts, lunch runs long. Smartrip recalculates alternatives on the fly and re-sequences the rest of the day, so the itinerary never goes stale.',
-        media: '/smartrip-replan.png',
+        headline: 'Schedule-Aware AI',
+        body: 'Generic recommendations are useless if they don’t fit your day. Smartrip’s AI analyzes your existing itinerary—understanding the pace, location, and type of activities you already have planned—to suggest the perfect missing piece exactly when you need it.',
+        media: '/smartrip-ai-suggest.png',
         ratio: 'aspect-[16/10]',
       },
     ],
@@ -113,7 +113,7 @@ const entries = [
     slug: 'nexus',
     n: '01',
     title: 'NEXUS',
-    homeStatement: 'WHERE COMMUNITY CHAOS BECOMES ABSOLUTE CLARITY',
+    homeStatement: 'ACTIONABLE INSIGHTS AT COMMUNITY SCALE',
     homeMedia: 'FULL-BLEED STILL — NEXUS PUBLISH VERDICT SCREEN',
     question: 'WHAT HAPPENS WHEN REAL RELATIONSHIPS ARE REDUCED TO ROWS IN A SPREADSHEET?',
     heroMedia: 'FULL-BLEED IMAGE — NEXUS PUBLISH VERDICT SCREEN',
@@ -124,7 +124,7 @@ const entries = [
     },
     problem: {
       headline: 'THE CHAOS OF SCALING A DIGITAL COMMUNITY',
-      body: "Managing thousands of followers, daily DMs, and incoming leads across multiple platforms quickly turns into an administrative nightmare. Without a centralized system, crucial conversations fall through the cracks, high-value leads are lost in the noise, and engaging with the community becomes a reactive, exhausting chore rather than a strategic advantage. The old way of using scattered spreadsheets simply couldn't keep up.",
+      body: "Managing over 75,000 members, daily DMs, and incoming leads across multiple platforms quickly became an administrative nightmare. Without a centralized system, valuable conversations slipped through the cracks, high-value leads were lost in the noise, and community management turned from a strategic growth engine into a reactive, exhausting process. Spreadsheets simply couldn't keep up.",
       media: '/nexus-problem.png',
     },
     causes: [
@@ -190,9 +190,10 @@ const entries = [
       ],
     },
     solution: [
+      /* Section hero: image only, no copy — headline/body are intentionally
+         omitted so SolutionBlock renders just the dashboard directly under the
+         / THE SOLUTION title. */
       {
-        headline: 'The Memory: Held, not filed',
-        body: 'No one here is a row in a spreadsheet. Nexus keeps a living picture of each person: what they’re reaching for, what’s holding them back, who they are beneath the message. Grounded in live data, nothing invented.',
         media: '/nexus-solution-dashboard.png',
         ratio: 'aspect-[16/10]',
       },
@@ -205,6 +206,20 @@ const entries = [
       {
         headline: 'The Guarantee: It drafts, you decide',
         body: 'Nexus writes the message in your voice, grounded in the real conversation, and then hands you the pen. Nothing is ever sent on your behalf. The machine remembers; the human shows up.',
+        media: '/nexus-guarantee.png',
+        ratio: 'aspect-[16/10]',
+      },
+      {
+        headline: 'The Intelligence: See the forest and the trees',
+        body: 'Nexus gives you a bird’s-eye view of your entire operation. From tracking a 75,000-strong community reach down to individual qualified leads in the CRM pipeline, it measures what actually moves the needle. Real-time data, zero guesswork.',
+        media: '/nexus-analytics.png',
+        ratio: 'aspect-[16/10]',
+      },
+      /* Bottom of the page: the marketing landing-page video, separated from the
+         product UI above by its own Philosophy framing. */
+      {
+        headline: 'The Philosophy',
+        body: 'The technology is just the vehicle. Here is the core belief behind Nexus and why it was built.',
         media: '/nexus-landing-page.mp4',
         ratio: 'aspect-[16/9]',
       },
