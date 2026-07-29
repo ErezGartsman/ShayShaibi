@@ -98,7 +98,7 @@ function Hero() {
               initial={{ opacity: 0, y: 120 }}
               animate={scrolled ? { opacity: 1, y: 0 } : { opacity: 0, y: 120 }}
               transition={{ duration: 1.7, ease }}
-              className="relative text-left font-mono leading-relaxed text-ink md:hidden"
+              className="relative w-full max-w-full break-words text-left font-mono leading-relaxed text-ink md:hidden"
               style={{ fontSize: 20, fontWeight: 300 }}
             >
               <strong className="font-medium">Guided by data and research.</strong> I build products that solve real user problems, with zero patience for{' '}
@@ -203,14 +203,14 @@ const aboutFacts = [
   'I blend data analysis with an understanding of human behavior to make decisions.',
   'I turn complex user feedback into structured, actionable product requirements.',
   'My focus is on clarity, logic, and stripping away friction.',
-  'Details guide every choice I make, ensuring every feature has a reason.',
+  'Details guide my every choice, ensuring every feature has a reason.',
 ]
 
 const philosophyFactsDesktop = [
   'I blend data analysis with an understanding of human behavior to make decisions.',
   'I turn complex user feedback into structured, actionable product requirements.',
   'My focus is on clarity, logic, and stripping away friction.',
-  'Details guide every choice I make, ensuring every feature has a reason.',
+  'Details guide my every choice, ensuring every feature has a reason.',
 ]
 
 const aboutImages = [
@@ -289,7 +289,7 @@ function AboutSection() {
         <Reveal amount={0.3}>
           {/* Exactly 1px larger than the mobile bio paragraphs below (My Background/Philosophy/
               Toolkit use text-base = 16px, verified), per Erez's relative-sizing rule */}
-          <p className="m-0 font-mono text-[17px] font-normal leading-[24px] tracking-[1px] text-ink">
+          <p className="m-0 w-full max-w-full break-words font-mono text-[17px] font-normal leading-[24px] tracking-[1px] text-ink">
             {aboutFacts.join(' ')}
           </p>
         </Reveal>
@@ -374,8 +374,8 @@ function AboutSection() {
               <h3 className="mb-4 font-sans text-xl text-dim">{c.label} ↘</h3>
             </Reveal>
             <Reveal amount={0.3}>
-              <p 
-                className="text-ink"
+              <p
+                className="w-full max-w-full break-words text-ink"
                 style={{
                   fontFamily: '"Spline Sans Mono", monospace',
                   fontWeight: 400,

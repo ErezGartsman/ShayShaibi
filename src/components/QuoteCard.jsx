@@ -71,7 +71,7 @@ export function QuoteCard({
             {onPrev && <SliderArrow dir="prev" onClick={onPrev} />}
             {onNext && <SliderArrow dir="next" onClick={onNext} />}
           </div>
-          <blockquote className="font-mono text-base leading-[1.2] text-ink md:order-first md:text-[24px] md:leading-snug">
+          <blockquote className="w-full max-w-full break-words font-mono text-base leading-[1.2] text-ink md:order-first md:text-[24px] md:leading-snug">
             " {quote} "
           </blockquote>
         </div>
@@ -80,7 +80,7 @@ export function QuoteCard({
             {source}
           </figcaption>
           {insight && (
-            <p className="flex items-start gap-[6px] border-t border-line-soft pt-4 font-sans text-sm leading-[1.2] text-grey md:gap-3 md:pt-5 md:leading-relaxed">
+            <p className="flex w-full max-w-full items-start gap-[6px] border-t border-line-soft pt-4 font-sans text-sm leading-[1.2] text-grey break-words md:gap-3 md:pt-5 md:leading-relaxed">
               <svg viewBox="0 0 16 16" className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true">
                 <path
                   d="M8 1.5a4.5 4.5 0 0 0-2.5 8.24c.5.36.9.9.9 1.51v.25h3.2v-.25c0-.61.4-1.15.9-1.51A4.5 4.5 0 0 0 8 1.5Z M6.6 13.2h2.8 M7 14.8h2"
@@ -98,7 +98,7 @@ export function QuoteCard({
               <p className="mb-1 font-mono text-sm font-bold uppercase tracking-[0.1em] text-ink">
                 Therefore
               </p>
-              <p className="font-sans text-sm leading-relaxed text-grey">{therefore}</p>
+              <p className="w-full max-w-full break-words font-sans text-sm leading-relaxed text-grey">{therefore}</p>
             </div>
           )}
         </div>

@@ -112,7 +112,7 @@ function TriadGrid({ items = [] }) {
             <h3 className="mb-4 font-sans text-lg font-semibold uppercase tracking-[0.02em] text-ink sm:text-xl">
               {item.title}
             </h3>
-            <p className="max-w-xs font-sans text-base leading-relaxed text-grey">
+            <p className="max-w-xs break-words font-sans text-base leading-relaxed text-grey">
               {item.body}
             </p>
           </div>
@@ -144,7 +144,7 @@ function SolutionBlock({ project, block }) {
       )}
       {block.body && (
         <Reveal delay={0.08}>
-          <p className="mx-auto mt-4 max-w-2xl text-center font-sans text-base leading-relaxed text-grey sm:text-lg md:mt-6">
+          <p className="mx-auto mt-4 max-w-2xl break-words text-center font-sans text-base leading-relaxed text-grey sm:text-lg md:mt-6">
             {block.body}
           </p>
         </Reveal>
@@ -418,12 +418,12 @@ export default function CaseStudy() {
               The Problem
             </SectionTitle>
             <Reveal delay={0.08}>
-              <h3 className="mt-4 max-w-2xl font-display text-3xl font-bold leading-tight tracking-[-0.24px] text-ink md:mt-6 md:text-4xl">
+              <h3 className="mt-4 max-w-2xl break-words font-display text-3xl font-bold leading-tight tracking-[-0.24px] text-ink md:mt-6 md:text-4xl">
                 {project.problem.headline}
               </h3>
             </Reveal>
             <Reveal delay={0.15}>
-              <p className="mt-4 max-w-3xl font-mono text-lg font-light leading-relaxed tracking-normal text-grey md:mt-6 md:text-xl">
+              <p className="mt-4 max-w-3xl break-words font-mono text-lg font-light leading-relaxed tracking-normal text-grey md:mt-6 md:text-xl">
                 {project.problem.body}
               </p>
             </Reveal>
