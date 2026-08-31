@@ -4,6 +4,7 @@ import RollingText from './RollingText.jsx'
 const ease = [0.22, 1, 0.36, 1]
 
 const links = [
+  ['LinkedIn', 'https://www.linkedin.com/in/shay-shaibi-7206a6290/'],
   ['Email Address', 'mailto:shayshaibi355@gmail.com'],
   ['Call Me', 'tel:+972542263500'],
 ]
