@@ -9,7 +9,7 @@ const links = [
 ]
 
 /* Dramatic left-to-right typewriter: SHAY resolves first, then SHAIBI */
-const lines = ['Shay', 'Shai', 'bi']
+const lines = ['Shay', 'Shaibi']
 const container = {
   hidden: {},
   show: { transition: { staggerChildren: 0.045, delayChildren: 0.1 } },
