@@ -12,7 +12,7 @@
   --color-line-soft: rgba(16, 16, 16, 0.08);
 
   /* "Arial Narrow" before the generic sans-serif fallback: Anton SC is ultra-condensed, and a
-     wide generic fallback measured ~22px wider than the loaded font on just the "EG" logo alone
+     wide generic fallback measured ~22px wider than the loaded font on just the "SHAY" logo alone
      (proportionally much more on the large display headlines) — that gap is what reads as a
      "jump" once the webfont swaps in. A condensed fallback keeps the swap visually near-invisible. */
   --font-display: "Anton SC", "Anton", "Arial Narrow", sans-serif;

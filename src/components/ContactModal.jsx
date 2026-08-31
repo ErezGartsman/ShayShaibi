@@ -85,12 +85,12 @@ export default function ContactModal({ open, onClose }) {
                 </span>
                 <div className="flex items-center gap-4">
                   <a
-                    href="mailto:erezkim1234@gmail.com"
+                    href="mailto:shayshaibi355@gmail.com"
                     className="font-mono text-sm text-grey transition-opacity hover:opacity-60"
                   >
-                    erezkim1234@gmail.com
+                    shayshaibi355@gmail.com
                   </a>
-                  <CopyButton value="erezkim1234@gmail.com" label="Copy email address" />
+                  <CopyButton value="shayshaibi355@gmail.com" label="Copy email address" />
                 </div>
               </div>
               <div className="flex items-baseline justify-between border-b border-line-soft py-7">
@@ -99,12 +99,12 @@ export default function ContactModal({ open, onClose }) {
                 </span>
                 <div className="flex items-center gap-4">
                   <a
-                    href="tel:+972546150955"
+                    href="tel:+972542263500"
                     className="font-mono text-sm text-grey transition-opacity hover:opacity-60"
                   >
-                    +972 54 615 0955
+                    +972 54-226-3500
                   </a>
-                  <CopyButton value="+972546150955" label="Copy phone number" />
+                  <CopyButton value="+972542263500" label="Copy phone number" />
                 </div>
               </div>
             </div>

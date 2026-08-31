@@ -126,7 +126,7 @@ export default function Nav() {
             className="relative z-10 font-display leading-none tracking-[0.2em]"
             style={{ fontSize: 40 }}
           >
-            EG
+            SHAY
           </Link>
 
           {/* Desktop (hamburger persists through the tablet range): exact 16px / 300 / 0.8px */}
@@ -165,7 +165,7 @@ export default function Nav() {
               label never does the swap Spline Sans Mono's own font-display: swap guarantees —
               that swap, not a positioning gap, was the real source of the "jump" (measured ~8px
               width difference between the fallback font and the real one for this text).
-              top-[22px], not top-4: the EG logo is 40px tall (leading-none) inside the nav's
+              top-[22px], not top-4: the SHAY logo is 40px tall (leading-none) inside the nav's
               py-6 (24px) padding, so its vertical center sits at 24+20=44px from the header's
               top edge. This button is 44px tall (min-h-[44px]), so centering IT on that same
               44px mark means its own top has to start at 44-22=22px, not the nav's raw
@@ -201,7 +201,7 @@ export default function Nav() {
           >
             <div className="flex items-center justify-between">
               <span className="font-display text-4xl leading-none tracking-[0.2em] text-ink">
-                EG
+                SHAY
               </span>
               <button
                 onClick={closeMenu}
@@ -263,7 +263,7 @@ export default function Nav() {
             </nav>
 
             <p className="mt-auto font-mono text-[13px] uppercase tracking-[0.25em] text-dim">
-              Hadera, Israel / UTC+3
+              Kfar Tavor, Israel / UTC+3
             </p>
           </motion.div>
         )}

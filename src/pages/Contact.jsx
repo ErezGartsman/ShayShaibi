@@ -4,10 +4,8 @@ import Reveal from '../components/Reveal.jsx'
 const ease = [0.22, 1, 0.36, 1]
 
 const channels = [
-  ['Email', 'erezkim1234@gmail.com', 'mailto:erezkim1234@gmail.com'],
-  ['LinkedIn', 'in/erezgartsman', 'https://www.linkedin.com/in/erezgartsman/'],
-  ['GitHub', 'ErezGartsman', 'https://github.com/ErezGartsman'],
-  ['CV', 'Erez-Gartsman-CV.pdf', '/Erez-Gartsman-CV.pdf'],
+  ['Email', 'shayshaibi355@gmail.com', 'mailto:shayshaibi355@gmail.com'],
+  ['Call', '+972 54-226-3500', 'tel:+972542263500'],
 ]
 
 export default function Contact() {
@@ -33,7 +31,7 @@ export default function Contact() {
 
       <Reveal className="mt-8">
         <p className="max-w-md font-mono text-lg leading-relaxed text-grey">
-          Product roles, collaborations, or a hard problem worth solving.
+          Design projects, collaborations, or a good problem worth solving.
           Email gets the fastest answer.
         </p>
       </Reveal>
@@ -44,7 +42,6 @@ export default function Contact() {
             <a
               key={label}
               href={href}
-              download={label === 'CV' ? 'Erez-Gartsman-CV.pdf' : undefined}
               target={href.startsWith('http') ? '_blank' : undefined}
               rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
               className="group flex flex-col justify-between gap-1 border-b border-line-soft py-7 transition-opacity hover:opacity-60 sm:flex-row sm:items-baseline"
@@ -58,7 +55,7 @@ export default function Contact() {
 
       <Reveal className="mt-10">
         <p className="font-mono text-[13px] uppercase tracking-[0.25em] text-dim">
-          Hadera, Israel / UTC+3
+          Kfar Tavor, Israel / UTC+3
         </p>
       </Reveal>
     </section>

@@ -25,7 +25,7 @@ function Hero() {
         transition={{ duration: 1.4, ease, delay: 0.15 }}
         className="font-display text-xl uppercase leading-none tracking-[0.2em] text-ink sm:text-2xl ml-0 sm:ml-10"
       >
-        Erez Gartsman
+        Shay Shaibi
       </motion.h1>
 
       {/* Mobile only: giant PRODUCT MANAGER, breathing room above/below, with a centered scale reveal */}
@@ -35,7 +35,7 @@ function Hero() {
         transition={{ duration: 0.9, ease, delay: 0.3 }}
         className="mt-4 mb-4 origin-left font-display text-[clamp(4rem,22vw,6rem)] uppercase leading-[0.9] tracking-tight text-ink md:hidden"
       >
-        Product Manager
+        UX/UI Designer
       </motion.h2>
       {/* Mobile only: compact subtitle, same full-width block as the title above so text-right flushes to its exact edge.
           Animation kept 1:1 with the desktop location line below (same initial/animate/transition). */}
@@ -45,7 +45,7 @@ function Hero() {
         transition={{ duration: 1.4, ease, delay: 0.15 }}
         className="mt-0 text-right font-display text-[24px] uppercase tracking-[4.8px] text-ink md:hidden"
       >
-        Based in Hadera
+        Based in Kfar Tavor
       </motion.h3>
 
       <div className="mt-6 grid items-center gap-12 lg:mt-20 lg:grid-cols-[minmax(0,380px)_1fr]">
@@ -53,7 +53,7 @@ function Hero() {
         <div className="relative z-20 ml-0 sm:ml-12">
           <motion.img
             src={portrait}
-            alt="Erez Gartsman"
+            alt="Shay Shaibi"
             initial={{ clipPath: 'polygon(0 0, 0 0, 0 0, 0 0)' }}
             animate={{ clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' }}
             transition={{ duration: 1.4, ease, delay: 0.15 }}
@@ -63,7 +63,7 @@ function Hero() {
 
         <div className="relative z-10 flex flex-col items-start h-full lg:items-stretch lg:pl-8 pb-0 sm:pb-4">
           {/* Job title: massive structural heading, desktop/tablet only — establishes the
-              same visual weight as the "Erez Gartsman" name / project titles, sitting
+              same visual weight as the "Shay Shaibi" name / project titles, sitting
               directly above the location line below it. */}
           <motion.h2
             initial={{ x: 100, opacity: 0 }}
@@ -71,7 +71,7 @@ function Hero() {
             transition={{ duration: 1.4, ease, delay: 0.1 }}
             className="hidden font-display text-[clamp(2.5rem,5vw,4.5rem)] uppercase leading-[0.95] tracking-tight text-ink md:block lg:self-end mr-8 lg:mr-16 mt-30"
           >
-            Product Manager
+            UX/UI Designer
           </motion.h2>
           {/* Location: slides in from the right, sized close to the name — desktop/tablet only, mobile uses the compact subtitle above */}
           <motion.p
@@ -80,7 +80,7 @@ function Hero() {
             transition={{ duration: 1.4, ease, delay: 0.2 }}
             className="hidden font-display text-[clamp(1.2rem,1.8vw,1.6rem)] uppercase leading-none tracking-[0.2em] text-ink md:block lg:self-end mr-8 lg:mr-16 mt-2 mb-auto"
           >
-            Based in Hadera
+            Based in Kfar Tavor
           </motion.p>
 
           {/*
@@ -101,8 +101,10 @@ function Hero() {
               className="relative w-full max-w-full break-words text-left font-mono leading-relaxed text-ink md:hidden"
               style={{ fontSize: 20, fontWeight: 300 }}
             >
-              <strong className="font-medium">Guided by data and research.</strong> I build products that solve real user problems, with zero patience for{' '}
-              <strong className="font-medium">friction or broken processes.</strong>
+              Designing with <strong className="font-medium">clarity</strong> and{' '}
+              <strong className="font-medium">intention</strong>. Guided by{' '}
+              <strong className="font-medium">psychology</strong> and a{' '}
+              <strong className="font-medium">love for tiny details</strong>.
             </motion.p>
             <motion.p
               initial={{ opacity: 0, y: 120 }}
@@ -111,8 +113,10 @@ function Hero() {
               className="relative hidden text-left font-mono leading-relaxed text-ink md:block"
               style={{ fontSize: 21, fontWeight: 300 }}
             >
-              <strong className="font-medium">Guided by data and research.</strong> I build products that solve real user problems, with zero patience for{' '}
-              <strong className="font-medium">friction or broken processes.</strong>
+              Designing with <strong className="font-medium">clarity</strong> and{' '}
+              <strong className="font-medium">intention</strong>. Guided by{' '}
+              <strong className="font-medium">psychology</strong> and a{' '}
+              <strong className="font-medium">love for tiny details</strong>.
             </motion.p>
           </div>
         </div>
@@ -168,7 +172,7 @@ function ProjectSection({ project }) {
             visible), which also incidentally gave the wrapping <Link> a
             distinguishing accessible name; that's preserved just as well now
             since the text is a normal visible element instead.
-            duration/ease slowed to the same luxe glide as the About image row, per Erez's
+            duration/ease slowed to the same luxe glide as the About image row, per the
             "any project cards" instruction — applies at every breakpoint since these Reveals
             aren't breakpoint-gated themselves. */}
         <div className="relative z-10 px-6 pb-4 sm:p-0 sm:-mb-2">
@@ -200,23 +204,25 @@ function ProjectSection({ project }) {
 }
 
 const aboutFacts = [
-  'I blend data analysis with an understanding of human behavior to make decisions.',
-  'I turn complex user feedback into structured, actionable product requirements.',
-  'My focus is on clarity, logic, and stripping away friction.',
-  'Details guide my every choice, ensuring every feature has a reason.',
+  'I design UX/UI experiences rooted in research and human behavior.',
+  'Psychology shapes how I approach complex problems.',
+  'I focus on clarity, structure, and intentional decisions.',
+  'Details guide every choice I make.',
+  'Every detail has a reason.',
 ]
 
 const philosophyFactsDesktop = [
-  'I blend data analysis with an understanding of human behavior to make decisions.',
-  'I turn complex user feedback into structured, actionable product requirements.',
-  'My focus is on clarity, logic, and stripping away friction.',
-  'Details guide my every choice, ensuring every feature has a reason.',
+  'I design UX/UI experiences rooted in research and human behavior.',
+  'Psychology shapes how I approach complex problems.',
+  'I focus on clarity, structure, and intentional decisions.',
+  'Details guide every choice I make.',
+  'Every detail has a reason.',
 ]
 
 const aboutImages = [
-  { src: '/about-work.jpg', alt: 'Product Planning' },
-  { src: '/about-speaking.jpg', alt: 'Community and Speaking' },
-  { src: '/about-field.jpg', alt: 'Strategy and Vision' },
+  { src: '/about-field.jpg', alt: 'Shay with her dog, Thor' },
+  { src: '/about-speaking.jpg', alt: 'Shay at the Maroon 5 concert in Israel' },
+  { src: '/about-work.jpg', alt: 'Shay by the sea' },
 ]
 
 // Mobile: aspect-[398/266] w-full max-w-[398px] (398x266 landscape). Desktop: literal
@@ -229,7 +235,7 @@ function ImageSlot({ item }) {
       <img
         src={item.src}
         alt={item.alt}
-        className="h-full w-full object-cover grayscale"
+        className="h-full w-full object-cover"
       />
     </div>
   )
@@ -237,32 +243,27 @@ function ImageSlot({ item }) {
 
 const aboutColumns = [
   {
-    label: 'My Background',
-    body: 'Dual-degree B.A. student in Information Science & Communication and Product Management fellow. Five years managing a 75,000-member online community, plus experience as an IDF tank commander under uncertainty.',
+    label: 'MY FAVORITE SUPERHERO',
+    body: 'Thor is named after my favorite Marvel superhero — and yes, I\'m completely obsessed with Marvel. I\'ve watched every movie at least twice and somehow still find new details to notice every time. He\'s my favorite little superhero and one of the happiest parts of my life.',
   },
   {
-    label: 'My Philosophy',
-    body: 'Products start with a named friction, not a feature idea. Research defines the requirements, and data settles the arguments. If a screen can\'t be traced to a real user problem, it doesn\'t ship. Simulation beats apology.',
+    label: 'A NIGHT TO REMEMBER',
+    body: 'This was at the Maroon 5 show in Israel — and one of those moments I still can\'t believe actually happened. I was so excited that I nearly fainted, and somehow I even ended up being featured on his Instagram Story. Definitely one of those memories that stays with you.',
   },
   {
-    label: 'My Toolkit',
-    body: 'PRDs, market research, A/B testing, and benchmarking. Technical stack includes Python, SQL, Power BI, DAX, HTML, C#, and JavaScript. Tools: Figma, Jira, Base44. I use AI extensively, but always as a tool, never unaudited.',
+    label: 'MY HAPPY PLACE',
+    body: 'The sea, travel, and time away are an essential part of my life. They give me space to slow down, recharge, and find inspiration. Some of my best creative ideas come when I\'m not actively looking for them — just taking in a new place, a different view, or a quiet moment by the water.',
   },
 ]
 
-// Reverse-chronological: the ongoing "NOW" role leads, then the rest by start year descending
-// (2024 -> 2023 -> 2018). Education entry removed per Erez's request.
-const experience = [
-  ['JULY 2026 — NOW', 'Product Management Practicum (Ambient AI)', 'ARC Innovation (Sheba Medical Center). Participating in the deployment of an AI Ambient Listening platform across hospital clinics. Assisting with product testing, prompt refinement, and system evaluation based on clinical workflows.'],
-  ['2021 — NOW', 'Digital Content Creator & Community Manager', 'Self-employed. Managed an online community of over 75,000 members focused on relationship dynamics and personal growth. Translated daily user interactions and A/B testing into data-driven content strategies that maximized engagement.'],
-  ['2024 — 2026', 'PR Specialist & Market Researcher', 'Maya Karvat Communications. Conducted qualitative market research and developed messaging strategies for over 15 distinct brands.'],
-  ['2023 — 2024', 'Creative Lead & Content Strategist', 'Alfi Productions. Led over 20 creative projects from initial concept through execution and final launch.'],
+const education = [
+  ['2020 — 2025', 'Visual Communication & Education', 'University of Haifa. Studied Visual Communication and Education over five years, developing a strong foundation in visual thinking, communication, design, and understanding how people learn and interact with information.'],
 ]
 
 function AboutSection() {
   return (
     <section id="about" className="px-4 pb-0 pt-[60px] sm:px-10 sm:pb-6 sm:pt-28">
-      {/* Mobile-only About Me text block: exact nested structure + typography from Erez's
+      {/* Mobile-only About Me text block: exact nested structure + typography from the
           430px reference DOM audit (kicker+headline share a gap-[10px] subgroup, inside a
           gap-4 outer wrapper alongside one single paragraph — a genuinely different DOM
           shape than desktop's kicker-then-2-col-grid layout below, not just different
@@ -277,18 +278,21 @@ function AboutSection() {
           <Reveal amount={0.3}>
             <div style={{ fontFamily: "'Sofia Sans Condensed', sans-serif" }}>
               <p className="m-0 text-[32px] font-normal uppercase leading-[32px] tracking-[1.6px] text-ink">
-                Product management 
+                Design is not
               </p>
               <p className="m-0 text-[32px] font-normal uppercase leading-[32px] tracking-[1.6px] text-ink">
-                is about solving the right problems
+                what I do - it's how I observe
+              </p>
+              <p className="m-0 text-[32px] font-normal uppercase leading-[32px] tracking-[1.6px] text-ink">
+                the world
               </p>
             </div>
           </Reveal>
         </div>
-        {/* All 4 facts joined into one continuous paragraph, no per-sentence elements/margins */}
+        {/* All facts joined into one continuous paragraph, no per-sentence elements/margins */}
         <Reveal amount={0.3}>
-          {/* Exactly 1px larger than the mobile bio paragraphs below (My Background/Philosophy/
-              Toolkit use text-base = 16px, verified), per Erez's relative-sizing rule */}
+          {/* Exactly 1px larger than the mobile bio paragraphs below (the three-image captions
+              use text-base = 16px, verified), per the relative-sizing rule */}
           <p className="m-0 w-full max-w-full break-words font-mono text-[17px] font-normal leading-[24px] tracking-[1px] text-ink">
             {aboutFacts.join(' ')}
           </p>
@@ -316,11 +320,11 @@ function AboutSection() {
               letterSpacing: '1.6px',
             }}
           >
-            Product management 
+            Design is not
             <br className="hidden md:block" />
-            <span className="whitespace-nowrap">is about solving the right</span>
+            <span className="whitespace-nowrap">what I do - it's how I observe</span>
             <br className="hidden md:block" />
-            problems
+            the world
           </h3>
         </Reveal>
         
@@ -353,11 +357,11 @@ function AboutSection() {
           isn't enough room for a literal 906px-wide grid (caught by the responsive audit: it
           overflowed the viewport at exactly 768px). The mobile Title->Text->Image block below
           covers the 768-1023 tablet range instead.
-          mt-[90px] (was 45px): EG's intro paragraph is one line shorter than NAZ's reference
+          mt-[90px] (was 45px): the intro paragraph is one line shorter than NAZ's reference
           (4 vs 5 lines), so matching NAZ's exact scroll depth for the images needs extra
           compensation beyond the text block's own height difference — tuned toward the upper
-          half of Erez's requested 80-100px range. duration/ease slowed to a luxe glide per
-          Erez's spec, applied only to this image row (Reveal's site-wide default is untouched). */}
+          half of the requested 80-100px range. duration/ease slowed to a luxe glide per
+          spec, applied only to this image row (Reveal's site-wide default is untouched). */}
       <div className="mx-auto mt-[90px] hidden max-w-[906px] grid-cols-3 gap-6 lg:grid">
         {aboutImages.map((img, i) => (
           <Reveal key={img.src} delay={i * 0.08} amount={0.3} duration={1} ease={[0.16, 1, 0.3, 1]}>
@@ -419,18 +423,18 @@ function AboutSection() {
         ))}
       </div>
 
-      {/* Experience */}
+      {/* Education */}
       {/* שינוי 1: הקטנו את המרווח העליון במובייל מ-28 ל-12 */}
-      <Reveal className="mt-12 md:mt-28"> 
+      <Reveal className="mt-12 md:mt-28">
         {/* שינוי 2: שינינו לגודל 32px במובייל שיתאים ל-ABOUT ME */}
         <h2 className="font-display text-[32px] md:text-[clamp(1.15rem,2.2vw,1.6rem)] uppercase leading-none tracking-[2.56px] md:tracking-[0.3em] text-ink">
-          Experience
+          Education
         </h2>
       </Reveal>
-      
+
       {/* שינוי 3: הקטנו את המרחק בין הכותרת לתפקיד הראשון במובייל מ-14 ל-6 */}
-      <div className="mt-6 md:mt-14"> 
-        {experience.map(([period, title, body]) => (
+      <div className="mt-6 md:mt-14">
+        {education.map(([period, title, body]) => (
           <Reveal key={title}>
             {/* שינוי 4: הקטנו את המרווחים בין תפקיד לתפקיד מ-py-8 ל-py-4 במובייל */}
             <div className="grid gap-2 border-t border-line-soft py-4 md:py-8 md:grid-cols-[180px_1fr]">

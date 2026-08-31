@@ -4,14 +4,12 @@ import RollingText from './RollingText.jsx'
 const ease = [0.22, 1, 0.36, 1]
 
 const links = [
-  ['LinkedIn', 'https://www.linkedin.com/in/erezgartsman/'],
-  ['GitHub', 'https://github.com/ErezGartsman'],
-  ['Download CV', '/Erez-Gartsman-CV.pdf'],
-  ['Email Address', 'mailto:erezkim1234@gmail.com'],
+  ['Email Address', 'mailto:shayshaibi355@gmail.com'],
+  ['Call Me', 'tel:+972542263500'],
 ]
 
-/* Dramatic left-to-right typewriter: EREZ resolves first, then GARTSMAN */
-const lines = ['Erez', 'Garts', 'man']
+/* Dramatic left-to-right typewriter: SHAY resolves first, then SHAIBI */
+const lines = ['Shay', 'Shai', 'bi']
 const container = {
   hidden: {},
   show: { transition: { staggerChildren: 0.045, delayChildren: 0.1 } },
@@ -29,7 +27,7 @@ function TypeName() {
       whileInView="show"
       viewport={{ once: true, amount: 0.5 }}
       className="font-display uppercase leading-[0.82] tracking-[-0.01em] text-ink"
-      aria-label="Erez Gartsman"
+      aria-label="Shay Shaibi"
     >
       {lines.map((line) => (
         <span key={line} className="block text-[clamp(3.5rem,9vw,7.5rem)]">
@@ -58,7 +56,7 @@ export default function Footer() {
             transition={{ duration: 1.1, ease, delay: 0.4 }}
             className="text-left font-display text-[clamp(1.5rem,3.4vw,2.6rem)] uppercase leading-none tracking-[0.12em] text-ink lg:text-right"
           >
-            Let's build what's next
+            let’s innovate together
           </motion.p>
           
           {/* שינוי 2: שינינו את הרווח בין הלינקים מ-gap-2 ל-gap-0 כדי להדק אותם לגמרי במובייל */}
@@ -73,7 +71,6 @@ export default function Footer() {
               <a
                 key={label}
                 href={href}
-                download={label === 'Download CV' ? 'Erez-Gartsman-CV.pdf' : undefined}
                 target={href.startsWith('http') ? '_blank' : undefined}
                 rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
                 /* שינוי 3: הסרנו את min-h-[44px] למובייל, והוספנו py-1 לריווח עדין */
