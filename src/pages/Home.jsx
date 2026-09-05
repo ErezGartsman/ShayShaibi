@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useScroll, useMotionValueEvent } from 'framer-motion'
+import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'framer-motion'
 import Reveal from '../components/Reveal.jsx'
 import { projects } from '../data/projects.js'
 import portrait from '../assets/portrait.png'
@@ -12,7 +12,10 @@ const heroRoles = ['DESIGNER', 'RESEARCH', 'STRATEGIST']
 
 /* Vertical slide/fade word-cycler: "UX/UI" stays put, the role after it loops.
    The invisible "STRATEGIST" reference (longest option) reserves a stable box so
-   the swap never reflows the line; the real words stack absolutely inside it. */
+   the swap never reflows the line. Only the current word is ever mounted — each
+   tick unmounts it (exits upward) and mounts the next (enters from below), so the
+   motion is always the same direction, including the STRATEGIST -> DESIGNER wrap
+   (comparing raw index numbers there made that one step reverse direction). */
 function RotatingRole() {
   const [index, setIndex] = useState(0)
 
@@ -26,21 +29,18 @@ function RotatingRole() {
   return (
     <span className="relative inline-block overflow-hidden align-top">
       <span className="invisible" aria-hidden="true">STRATEGIST</span>
-      {heroRoles.map((word, i) => (
+      <AnimatePresence initial={false}>
         <motion.span
-          key={word}
+          key={heroRoles[index]}
           className="absolute inset-0"
-          initial={false}
-          animate={
-            index === i
-              ? { y: '0%', opacity: 1 }
-              : { y: index > i ? '-100%' : '100%', opacity: 0 }
-          }
+          initial={{ y: '100%', opacity: 0 }}
+          animate={{ y: '0%', opacity: 1 }}
+          exit={{ y: '-100%', opacity: 0 }}
           transition={{ type: 'spring', stiffness: 60, damping: 16 }}
         >
-          {word}
+          {heroRoles[index]}
         </motion.span>
-      ))}
+      </AnimatePresence>
     </span>
   )
 }
@@ -254,8 +254,7 @@ const philosophyFactsDesktop = [
   'Research isn\'t a step in my process. It\'s the foundation.',
   'I look for the real problem before I design a single screen.',
   'Good design is accessible, clear, and built with purpose, not trends.',
-  'I want to help shape what UX/UI becomes next, not just follow it.',
-  'Every detail has a reason.',
+  'I want to help shape what UX/UI becomes next, not just follow it. Every detail has a reason.',
 ]
 
 const aboutImages = [
