@@ -333,7 +333,7 @@ function ImageSlot({ item }) {
               type="button"
               onClick={() => setRevealOpen(true)}
               aria-label={`Reveal full image: ${item.alt}`}
-              className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-ink/0 px-4 text-center text-paper opacity-0 transition-all duration-300 hover:bg-ink/90 hover:opacity-100"
+              className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-ink/90 px-4 text-center text-paper transition-opacity duration-300 hover:opacity-90"
             >
               <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
                 <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z" strokeLinecap="round" strokeLinejoin="round" />
