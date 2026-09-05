@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'framer-motion'
 import Reveal from '../components/Reveal.jsx'
+import ProcessOrbit from '../components/ProcessOrbit.jsx'
 import { projects } from '../data/projects.js'
 import portrait from '../assets/portrait.png'
 import useInViewAutoplay from '../hooks/useInViewAutoplay.js'
@@ -282,15 +283,15 @@ function ImageSlot({ item }) {
 const aboutColumns = [
   {
     label: 'MY FAVORITE SUPERHERO',
-    body: 'Thor is named after my favorite Marvel superhero — and yes, I\'m completely obsessed with Marvel. I\'ve watched every movie at least twice and somehow still find new details to notice every time. He\'s my favorite little superhero and one of the happiest parts of my life.',
+    body: 'Thor is named after my favorite Marvel superhero, and yes, I\'m completely obsessed with Marvel. I\'ve watched every movie at least twice and somehow still find new details to notice every time. He\'s my favorite little superhero and one of the happiest parts of my life.',
   },
   {
     label: 'A NIGHT TO REMEMBER',
-    body: 'This was at the Maroon 5 show in Israel — and one of those moments I still can\'t believe actually happened. I was so excited that I nearly fainted, and somehow I even ended up being featured on his Instagram Story. Definitely one of those memories that stays with you.',
+    body: 'This was at the Maroon 5 show in Israel, and one of those moments I still can\'t believe actually happened. I was so excited that I nearly fainted, and somehow I even ended up being featured on his Instagram Story. Definitely one of those memories that stays with you.',
   },
   {
     label: 'MY HAPPY PLACE',
-    body: 'The sea, travel, and time away are an essential part of my life. They give me space to slow down, recharge, and find inspiration. Some of my best creative ideas come when I\'m not actively looking for them — just taking in a new place, a different view, or a quiet moment by the water.',
+    body: 'The sea, travel, and time away are an essential part of my life. They give me space to slow down, recharge, and find inspiration. Some of my best creative ideas come when I\'m not actively looking for them, just taking in a new place, a different view, or a quiet moment by the water.',
   },
 ]
 
@@ -343,39 +344,47 @@ function AboutSection() {
         </h2>
       </Reveal>
 
-      {/* Desktop: headline + philosophy, stacked in a single column so the paragraph
-          shares the exact same left edge as the headline above it (both are plain
-          block children of this one flex column — no offsetting margins needed). */}
-      <div className="hidden gap-8 md:mt-12 md:flex md:flex-col md:pl-[22px]">
-        <Reveal amount={0.3} className="min-w-0">
-          <h3
-            className="text-[64px] font-normal uppercase leading-[64px] text-ink"
-            style={{
-              fontFamily: "'Sofia Sans Condensed', sans-serif",
-              letterSpacing: '1.6px',
-            }}
-          >
-            I don't design
-            <br className="hidden md:block" />
-            until I understand
-          </h3>
-        </Reveal>
+      {/* Desktop: headline + philosophy on the left (own flex column, so the
+          paragraph shares the exact same left edge as the headline above it —
+          both are plain block children, no offsetting margins needed); the
+          process orbit fills the white space on the right, lg+ only, where
+          there's enough width for it. */}
+      <div className="hidden gap-8 md:mt-12 md:grid lg:grid-cols-[3fr_2fr] lg:gap-16 md:pl-[22px]">
+        <div className="flex flex-col gap-8">
+          <Reveal amount={0.3} className="min-w-0">
+            <h3
+              className="text-[64px] font-normal uppercase leading-[64px] text-ink"
+              style={{
+                fontFamily: "'Sofia Sans Condensed', sans-serif",
+                letterSpacing: '1.6px',
+              }}
+            >
+              I don't design
+              <br className="hidden md:block" />
+              until I understand
+            </h3>
+          </Reveal>
 
-        <Reveal delay={0.12} amount={0.3}>
-          <div
-            className="space-y-2 text-ink max-w-lg"
-            style={{
-              fontFamily: "'Sofia Sans Condensed', sans-serif",
-              fontWeight: 400,
-              fontSize: '20px',
-              letterSpacing: '1.6px',
-              lineHeight: '26px',
-            }}
-          >
-            {philosophyFactsDesktop.map((f) => (
-              <p key={f}>{f}</p>
-            ))}
-          </div>
+          <Reveal delay={0.12} amount={0.3}>
+            <div
+              className="space-y-2 text-ink max-w-lg"
+              style={{
+                fontFamily: "'Sofia Sans Condensed', sans-serif",
+                fontWeight: 400,
+                fontSize: '20px',
+                letterSpacing: '1.6px',
+                lineHeight: '26px',
+              }}
+            >
+              {philosophyFactsDesktop.map((f) => (
+                <p key={f}>{f}</p>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+
+        <Reveal delay={0.2} amount={0.3} className="hidden lg:flex lg:items-center lg:justify-center">
+          <ProcessOrbit />
         </Reveal>
       </div>
 
