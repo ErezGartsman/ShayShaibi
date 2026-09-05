@@ -383,12 +383,6 @@ const aboutColumns = [
   },
 ]
 
-const funFacts = [
-  "I'm 26 and still have a stuffed-animal collection, mostly unicorns, and every single one is named Emily.",
-  "I can belt out old Festigal songs in the car, my room, or the shower like it's a real show.",
-  'I watch SpongeBob almost every day and know an unreasonable number of episodes by heart.',
-]
-
 const education = [
   ['2020 — 2025', 'Visual Communication & Education', 'University of Haifa. Studied Visual Communication and Education over five years, developing a strong foundation in visual thinking, communication, design, and understanding how people learn and interact with information.'],
 ]
@@ -550,72 +544,63 @@ function AboutSection() {
         ))}
       </div>
 
-      {/* Personal notes: vision, fun facts, the dream. Same label + Spline Sans Mono
-          body typography as the three-image captions above, so this reads as a
-          continuation of that same personal voice rather than a new section style. */}
-      <div className="mt-14 max-w-2xl md:mt-24">
-        <Reveal amount={0.3}>
-          <h3 className="mb-6 font-sans text-xl text-dim sm:text-2xl">Vision ↘</h3>
-          <div
-            className="space-y-4 text-ink"
-            style={{
-              fontFamily: '"Spline Sans Mono", monospace',
-              fontWeight: 400,
-              fontSize: '18px',
-              lineHeight: '1.2em',
-              letterSpacing: '0.01em',
-              color: '#101010',
-            }}
-          >
-            <p>
-              I want to be part of the next generation of UX/UI, not just using existing methods, but developing new ways to research, think, and design experiences.
-            </p>
-            <p>
-              I want to create products that feel new and surprising, yet still natural and intuitive to use. I want to connect the deep research I love with the playful, creative side of who I am, and bring ideas, methods, and experiences to the field that haven't been seen before.
-            </p>
-          </div>
-        </Reveal>
+      {/* Personal notes: vision and the dream, with the FunFacts.jpeg graphic (which
+          already carries that content visually) sitting parallel to them on the right,
+          lg+ only; on mobile there's no "right column" so it just falls into the normal
+          flow below both text blocks instead. Same label + Spline Sans Mono body
+          typography as the three-image captions above, so this reads as a continuation
+          of that same personal voice rather than a new section style. */}
+      <div className="mt-14 grid gap-10 md:mt-24 lg:grid-cols-[3fr_2fr] lg:gap-16">
+        <div className="flex max-w-2xl flex-col gap-14">
+          <Reveal amount={0.3}>
+            <h3 className="mb-6 font-sans text-xl text-dim sm:text-2xl">Vision ↘</h3>
+            <div
+              className="space-y-4 text-ink"
+              style={{
+                fontFamily: '"Spline Sans Mono", monospace',
+                fontWeight: 400,
+                fontSize: '18px',
+                lineHeight: '1.2em',
+                letterSpacing: '0.01em',
+                color: '#101010',
+              }}
+            >
+              <p>
+                I want to be part of the next generation of UX/UI, not just using existing methods, but developing new ways to research, think, and design experiences.
+              </p>
+              <p>
+                I want to create products that feel new and surprising, yet still natural and intuitive to use. I want to connect the deep research I love with the playful, creative side of who I am, and bring ideas, methods, and experiences to the field that haven't been seen before.
+              </p>
+            </div>
+          </Reveal>
 
-        <Reveal delay={0.08} amount={0.3} className="mt-14 block">
-          <h3 className="mb-6 font-sans text-xl text-dim sm:text-2xl">Fun Facts ↘</h3>
-          <ul
-            className="space-y-3 text-ink"
-            style={{
-              fontFamily: '"Spline Sans Mono", monospace',
-              fontWeight: 400,
-              fontSize: '18px',
-              lineHeight: '1.2em',
-              letterSpacing: '0.01em',
-              color: '#101010',
-            }}
-          >
-            {funFacts.map((fact) => (
-              <li key={fact} className="flex gap-3">
-                <span aria-hidden="true">•</span>
-                <span>{fact}</span>
-              </li>
-            ))}
-          </ul>
-        </Reveal>
+          <Reveal delay={0.16} amount={0.3}>
+            <h3 className="mb-6 font-sans text-xl text-dim sm:text-2xl">The Dream ↘</h3>
+            <div
+              className="space-y-4 text-ink"
+              style={{
+                fontFamily: '"Spline Sans Mono", monospace',
+                fontWeight: 400,
+                fontSize: '18px',
+                lineHeight: '1.2em',
+                letterSpacing: '0.01em',
+                color: '#101010',
+              }}
+            >
+              <p>My biggest dream is to create the next SpongeBob.</p>
+              <p>
+                Not to recreate SpongeBob, but to build an original world of my own: characters, humor, language, and a story that become part of culture, that people grow up with. I want to create something a child recognizes today and is still quoting twenty years from now.
+              </p>
+            </div>
+          </Reveal>
+        </div>
 
-        <Reveal delay={0.16} amount={0.3} className="mt-14 block">
-          <h3 className="mb-6 font-sans text-xl text-dim sm:text-2xl">The Dream ↘</h3>
-          <div
-            className="space-y-4 text-ink"
-            style={{
-              fontFamily: '"Spline Sans Mono", monospace',
-              fontWeight: 400,
-              fontSize: '18px',
-              lineHeight: '1.2em',
-              letterSpacing: '0.01em',
-              color: '#101010',
-            }}
-          >
-            <p>My biggest dream is to create the next SpongeBob.</p>
-            <p>
-              Not to recreate SpongeBob, but to build an original world of my own: characters, humor, language, and a story that become part of culture, that people grow up with. I want to create something a child recognizes today and is still quoting twenty years from now.
-            </p>
-          </div>
+        <Reveal delay={0.08} amount={0.3}>
+          <img
+            src="/FunFacts.jpeg"
+            alt="Fun facts about Shay: her unicorn stuffed-animal collection all named Emily, singing old Festigal songs, and watching SpongeBob almost every day"
+            className="w-full max-w-[398px] object-cover lg:max-w-none"
+          />
         </Reveal>
       </div>
 
