@@ -260,23 +260,26 @@ const philosophyFactsDesktop = [
 ]
 
 const aboutImages = [
-  { src: '/about-field.jpg', alt: 'Shay with her dog, Thor' },
+  { src: '/about-field.jpg', alt: 'Shay with her dog, Thor', borderColor: '#FF5613' },
   {
     src: '/about-speaking.jpg',
     alt: 'Shay at the Maroon 5 concert in Israel',
     sensitive: true,
+    borderColor: '#9F4EFF',
   },
-  { src: '/about-work.jpg', alt: 'Shay by the sea' },
+  { src: '/about-work.jpg', alt: 'Shay by the sea', borderColor: '#2196F3' },
 ]
 
 /* Rotating-border frame: a thin conic-gradient ring around the image that
    sweeps to follow the cursor (angle from image center to pointer), in the
-   site's own monochrome tokens rather than the loud multicolor version this
-   was adapted from. Built with a plain CSS gradient-border trick (two
-   background layers, one clipped to padding-box, one to border-box) instead
-   of the shadcn/Next.js component it's inspired by, since this project uses
-   neither. */
-function FrameBorder({ children, className = '' }) {
+   reference component's own per-image accent colors. Built with a plain CSS
+   gradient-border trick (two background layers, one clipped to padding-box,
+   one to border-box) instead of the shadcn/Next.js component it's adapted
+   from, since this project uses neither.
+   w-fit is required: as a bare block div this would otherwise stretch to
+   fill its CSS Grid cell (grid items default to justify-self: stretch),
+   leaving a blank gap to the right of the fixed-width image inside it. */
+function FrameBorder({ children, color, className = '' }) {
   const ref = useRef(null)
 
   const handleMouseMove = (e) => {
@@ -297,10 +300,9 @@ function FrameBorder({ children, className = '' }) {
       ref={ref}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className={`border-[3px] border-transparent bg-origin-border transition-shadow duration-300 ${className}`}
+      className={`w-fit border-[3px] border-transparent bg-origin-border transition-shadow duration-300 ${className}`}
       style={{
-        backgroundImage:
-          'linear-gradient(var(--color-paper), var(--color-paper)), conic-gradient(from var(--rotation, 0rad), var(--color-ink) 0deg, var(--color-ink) 70deg, var(--color-line) 70deg, var(--color-line) 360deg)',
+        backgroundImage: `linear-gradient(var(--color-paper), var(--color-paper)), conic-gradient(from var(--rotation, 0rad), ${color} 0deg, ${color} 90deg, var(--color-panel) 90deg, var(--color-panel) 360deg)`,
         backgroundClip: 'padding-box, border-box',
       }}
     >
@@ -317,7 +319,7 @@ function ImageSlot({ item }) {
   const [revealOpen, setRevealOpen] = useState(false)
 
   return (
-    <FrameBorder>
+    <FrameBorder color={item.borderColor}>
       <div className="relative aspect-[398/266] w-full max-w-[398px] overflow-hidden bg-panel lg:aspect-auto lg:h-[191px] lg:w-[286px]">
         <img
           src={item.src}

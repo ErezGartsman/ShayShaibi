@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import useFocusTrap from '../hooks/useFocusTrap.js'
 
@@ -6,7 +7,13 @@ const ease = [0.22, 1, 0.36, 1]
 
 /* Full, uncropped image reveal: the grid thumbnails are object-cover (cropped
    to fit their fixed box), so clicking through shows the real image at its
-   own aspect ratio (object-contain) instead. */
+   own aspect ratio (object-contain) instead.
+   Rendered via a portal straight into document.body: this component mounts
+   deep inside the About section's Reveal-wrapped motion.divs, and any of
+   those ancestors having an active CSS transform (which framer-motion's own
+   animated x/y/scale props apply) redefines the containing block for
+   position:fixed, trapping this "full screen" overlay inside that ancestor's
+   own box instead of the real viewport. The portal sidesteps that entirely. */
 export default function ImageLightbox({ open, onClose, src, alt }) {
   const panelRef = useRef(null)
 
@@ -19,7 +26,7 @@ export default function ImageLightbox({ open, onClose, src, alt }) {
 
   useFocusTrap(open, panelRef, onClose)
 
-  return (
+  return createPortal(
     <AnimatePresence>
       {open && (
         <motion.div
@@ -53,6 +60,7 @@ export default function ImageLightbox({ open, onClose, src, alt }) {
           </motion.div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   )
 }
