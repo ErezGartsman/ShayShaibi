@@ -320,43 +320,50 @@ function ImageSlot({ item }) {
 
   return (
     <FrameBorder color={item.borderColor}>
-      <div className="relative aspect-[398/266] w-full max-w-[398px] overflow-hidden bg-panel lg:aspect-auto lg:h-[191px] lg:w-[286px]">
+      <button
+        type="button"
+        onClick={() => setRevealOpen(true)}
+        aria-label={item.sensitive ? `Reveal full image: ${item.alt}` : `View full image: ${item.alt}`}
+        className="group relative block aspect-[398/266] w-full max-w-[398px] cursor-pointer overflow-hidden bg-panel lg:aspect-auto lg:h-[191px] lg:w-[286px]"
+      >
         <img
           src={item.src}
           alt={item.alt}
-          className="h-full w-full object-cover"
+          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
 
-        {item.sensitive && (
-          <>
-            <button
-              type="button"
-              onClick={() => setRevealOpen(true)}
-              aria-label={`Reveal full image: ${item.alt}`}
-              className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-ink/90 px-4 text-center text-paper transition-opacity duration-300 hover:opacity-90"
-            >
-              <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-                <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z" strokeLinecap="round" strokeLinejoin="round" />
-                <circle cx="12" cy="12" r="3" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M4 4l16 16" strokeLinecap="round" />
+        {item.sensitive ? (
+          <span className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-ink/90 px-4 text-center text-paper transition-opacity duration-300 group-hover:opacity-90">
+            <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+              <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z" strokeLinecap="round" strokeLinejoin="round" />
+              <circle cx="12" cy="12" r="3" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M4 4l16 16" strokeLinecap="round" />
+            </svg>
+            <span className="font-sans text-sm font-semibold">Sensitive Content</span>
+            <span className="max-w-[220px] font-mono text-xs leading-relaxed text-paper/70">
+              This photo contains a level of excitement some viewers may find hard to believe.
+            </span>
+            <span className="mt-1 border border-paper px-4 py-1.5 font-mono text-xs uppercase tracking-[0.1em]">
+              See Now
+            </span>
+          </span>
+        ) : (
+          <span className="absolute inset-0 flex items-center justify-center bg-ink/0 opacity-0 transition-all duration-300 group-hover:bg-ink/20 group-hover:opacity-100">
+            <span className="flex h-10 w-10 items-center justify-center rounded-full border border-paper text-paper">
+              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                <path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-              <span className="font-sans text-sm font-semibold">Sensitive Content</span>
-              <span className="max-w-[220px] font-mono text-xs leading-relaxed text-paper/70">
-                This photo contains a level of excitement some viewers may find hard to believe.
-              </span>
-              <span className="mt-1 border border-paper px-4 py-1.5 font-mono text-xs uppercase tracking-[0.1em]">
-                See Now
-              </span>
-            </button>
-            <ImageLightbox
-              open={revealOpen}
-              onClose={() => setRevealOpen(false)}
-              src={item.src}
-              alt={item.alt}
-            />
-          </>
+            </span>
+          </span>
         )}
-      </div>
+      </button>
+
+      <ImageLightbox
+        open={revealOpen}
+        onClose={() => setRevealOpen(false)}
+        src={item.src}
+        alt={item.alt}
+      />
     </FrameBorder>
   )
 }
