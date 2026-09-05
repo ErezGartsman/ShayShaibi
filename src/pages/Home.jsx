@@ -8,6 +8,43 @@ import useInViewAutoplay from '../hooks/useInViewAutoplay.js'
 
 const ease = [0.22, 1, 0.36, 1]
 
+const heroRoles = ['DESIGNER', 'RESEARCH', 'STRATEGIST']
+
+/* Vertical slide/fade word-cycler: "UX/UI" stays put, the role after it loops.
+   The invisible "STRATEGIST" reference (longest option) reserves a stable box so
+   the swap never reflows the line; the real words stack absolutely inside it. */
+function RotatingRole() {
+  const [index, setIndex] = useState(0)
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setIndex((i) => (i + 1) % heroRoles.length)
+    }, 2200)
+    return () => clearInterval(id)
+  }, [])
+
+  return (
+    <span className="relative inline-block overflow-hidden align-top">
+      <span className="invisible" aria-hidden="true">STRATEGIST</span>
+      {heroRoles.map((word, i) => (
+        <motion.span
+          key={word}
+          className="absolute inset-0"
+          initial={false}
+          animate={
+            index === i
+              ? { y: '0%', opacity: 1 }
+              : { y: index > i ? '-100%' : '100%', opacity: 0 }
+          }
+          transition={{ type: 'spring', stiffness: 60, damping: 16 }}
+        >
+          {word}
+        </motion.span>
+      ))}
+    </span>
+  )
+}
+
 function Hero() {
   // The intro paragraph stays hidden until the user begins to scroll
   const { scrollY } = useScroll()
@@ -35,7 +72,8 @@ function Hero() {
         transition={{ duration: 0.9, ease, delay: 0.3 }}
         className="mt-4 mb-4 origin-left font-display text-[clamp(4rem,22vw,6rem)] uppercase leading-[0.9] tracking-tight text-ink md:hidden"
       >
-        UX/UI Designer
+        <span className="sr-only">UX/UI Designer</span>
+        <span aria-hidden="true">UX/UI <RotatingRole /></span>
       </motion.h2>
       {/* Mobile only: compact subtitle, same full-width block as the title above so text-right flushes to its exact edge.
           Animation kept 1:1 with the desktop location line below (same initial/animate/transition). */}
@@ -71,7 +109,8 @@ function Hero() {
             transition={{ duration: 1.4, ease, delay: 0.1 }}
             className="hidden font-display text-[clamp(2.5rem,5vw,4.5rem)] uppercase leading-[0.95] tracking-tight text-ink md:block lg:self-end mr-8 lg:mr-16 mt-30"
           >
-            UX/UI Designer
+            <span className="sr-only">UX/UI Designer</span>
+            <span aria-hidden="true">UX/UI <RotatingRole /></span>
           </motion.h2>
           {/* Location: slides in from the right, sized close to the name — desktop/tablet only, mobile uses the compact subtitle above */}
           <motion.p
@@ -101,10 +140,10 @@ function Hero() {
               className="relative w-full max-w-full break-words text-left font-mono leading-relaxed text-ink md:hidden"
               style={{ fontSize: 20, fontWeight: 300 }}
             >
-              Designing with <strong className="font-medium">clarity</strong> and{' '}
-              <strong className="font-medium">intention</strong>. Guided by{' '}
-              <strong className="font-medium">psychology</strong> and a{' '}
-              <strong className="font-medium">love for tiny details</strong>.
+              I don't design until I <strong className="font-medium">understand</strong>.{' '}
+              <strong className="font-medium">Research</strong> comes first,{' '}
+              <strong className="font-medium">curiosity</strong> follows, and every detail has a{' '}
+              <strong className="font-medium">reason</strong>.
             </motion.p>
             <motion.p
               initial={{ opacity: 0, y: 120 }}
@@ -113,10 +152,10 @@ function Hero() {
               className="relative hidden text-left font-mono leading-relaxed text-ink md:block"
               style={{ fontSize: 21, fontWeight: 300 }}
             >
-              Designing with <strong className="font-medium">clarity</strong> and{' '}
-              <strong className="font-medium">intention</strong>. Guided by{' '}
-              <strong className="font-medium">psychology</strong> and a{' '}
-              <strong className="font-medium">love for tiny details</strong>.
+              I don't design until I <strong className="font-medium">understand</strong>.{' '}
+              <strong className="font-medium">Research</strong> comes first,{' '}
+              <strong className="font-medium">curiosity</strong> follows, and every detail has a{' '}
+              <strong className="font-medium">reason</strong>.
             </motion.p>
           </div>
         </div>
@@ -204,19 +243,19 @@ function ProjectSection({ project }) {
 }
 
 const aboutFacts = [
-  'I design UX/UI experiences rooted in research and human behavior.',
-  'Psychology shapes how I approach complex problems.',
-  'I focus on clarity, structure, and intentional decisions.',
-  'Details guide every choice I make.',
-  'Every detail has a reason.',
+  'Research isn\'t a step in my process. It\'s the foundation.',
+  'I look for the real problem before I design a single screen.',
+  'Good design is accessible, clear, and built with purpose, not trends.',
+  'I want to help shape what UX/UI becomes next, not just follow it.',
+  'Every detail has a reason.',
 ]
 
 const philosophyFactsDesktop = [
-  'I design UX/UI experiences rooted in research and human behavior.',
-  'Psychology shapes how I approach complex problems.',
-  'I focus on clarity, structure, and intentional decisions.',
-  'Details guide every choice I make.',
-  'Every detail has a reason.',
+  'Research isn\'t a step in my process. It\'s the foundation.',
+  'I look for the real problem before I design a single screen.',
+  'Good design is accessible, clear, and built with purpose, not trends.',
+  'I want to help shape what UX/UI becomes next, not just follow it.',
+  'Every detail has a reason.',
 ]
 
 const aboutImages = [
@@ -278,13 +317,10 @@ function AboutSection() {
           <Reveal amount={0.3}>
             <div style={{ fontFamily: "'Sofia Sans Condensed', sans-serif" }}>
               <p className="m-0 text-[32px] font-normal uppercase leading-[32px] tracking-[1.6px] text-ink">
-                Design is not
+                I don't design
               </p>
               <p className="m-0 text-[32px] font-normal uppercase leading-[32px] tracking-[1.6px] text-ink">
-                what I do - it's how I observe
-              </p>
-              <p className="m-0 text-[32px] font-normal uppercase leading-[32px] tracking-[1.6px] text-ink">
-                the world
+                until I understand
               </p>
             </div>
           </Reveal>
@@ -308,10 +344,10 @@ function AboutSection() {
         </h2>
       </Reveal>
 
-      {/* Desktop: headline + philosophy */}
-      {/* גם פה, שינינו ל-pl-[30px] כדי שהכותרת הגדולה תזוז שמאלה יחד עם ה-ABOUT ME */}
-      {/* gap reduced 14->8 to pull the philosophy column closer to the headline (desktop only, mobile grid untouched) */}
-      <div className="hidden gap-8 md:mt-12 md:grid lg:grid-cols-[3fr_2fr] lg:items-start md:pl-[22px]">
+      {/* Desktop: headline + philosophy, stacked in a single column so the paragraph
+          shares the exact same left edge as the headline above it (both are plain
+          block children of this one flex column — no offsetting margins needed). */}
+      <div className="hidden gap-8 md:mt-12 md:flex md:flex-col md:pl-[22px]">
         <Reveal amount={0.3} className="min-w-0">
           <h3
             className="text-[64px] font-normal uppercase leading-[64px] text-ink"
@@ -320,20 +356,13 @@ function AboutSection() {
               letterSpacing: '1.6px',
             }}
           >
-            Design is not
+            I don't design
             <br className="hidden md:block" />
-            <span className="whitespace-nowrap">what I do - it's how I observe</span>
-            <br className="hidden md:block" />
-            the world
+            until I understand
           </h3>
         </Reveal>
-        
-        {/* 
-            כאן הקסם של הפסקה: 
-            1. lg:mt-[112px] דוחף אותה עוד יותר למטה (קודם היה 96).
-            2. lg:-ml-[30px] מושך את הפסקה הספציפית הזו שמאלה (המינוס מושך שמאלה). 
-        */}
-        <Reveal delay={0.12} amount={0.3} className="lg:mt-[155px] lg:-ml-[183px]">
+
+        <Reveal delay={0.12} amount={0.3}>
           <div
             className="space-y-2 text-ink max-w-lg"
             style={{
@@ -351,18 +380,15 @@ function AboutSection() {
         </Reveal>
       </div>
 
-      {/* Desktop: three compact panels side by side. max-w-[906px] = 3x286px images + 2x24px gaps
-          exactly, since each ImageSlot is now a literal 286px wide (max-w-3xl was too narrow and
-          would've overflowed/wrapped them). Gated at lg: (1024px), not md: — at md (768px) there
-          isn't enough room for a literal 906px-wide grid (caught by the responsive audit: it
-          overflowed the viewport at exactly 768px). The mobile Title->Text->Image block below
-          covers the 768-1023 tablet range instead.
+      {/* Desktop: three panels side by side, sharing the exact same grid-cols-3 gap-10
+          track as the heading/paragraph row below (same section padding, no mx-auto/
+          max-width of its own), so each image's left edge lines up with its heading's.
           mt-[90px] (was 45px): the intro paragraph is one line shorter than NAZ's reference
           (4 vs 5 lines), so matching NAZ's exact scroll depth for the images needs extra
           compensation beyond the text block's own height difference — tuned toward the upper
           half of the requested 80-100px range. duration/ease slowed to a luxe glide per
           spec, applied only to this image row (Reveal's site-wide default is untouched). */}
-      <div className="mx-auto mt-[90px] hidden max-w-[906px] grid-cols-3 gap-6 lg:grid">
+      <div className="mt-[90px] hidden grid-cols-3 gap-10 lg:grid">
         {aboutImages.map((img, i) => (
           <Reveal key={img.src} delay={i * 0.08} amount={0.3} duration={1} ease={[0.16, 1, 0.3, 1]}>
             <ImageSlot item={img} />
@@ -399,8 +425,8 @@ function AboutSection() {
         ))}
       </div>
 
-      {/* Desktop: three columns side by side */}
-      <div className="mt-24 hidden gap-14 lg:grid lg:grid-cols-3 lg:gap-10">
+      {/* Desktop: three columns side by side, snug against the images above them */}
+      <div className="mt-6 hidden gap-14 lg:grid lg:grid-cols-3 lg:gap-10">
         {aboutColumns.map((c, i) => (
           <Reveal key={c.label} delay={i * 0.08}>
             <div>
