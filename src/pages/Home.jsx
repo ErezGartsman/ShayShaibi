@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'framer-motion'
 import Reveal from '../components/Reveal.jsx'
 import ProcessOrbit from '../components/ProcessOrbit.jsx'
+import ImageLightbox from '../components/ImageLightbox.jsx'
 import { projects } from '../data/projects.js'
 import portrait from '../assets/portrait.png'
 import useInViewAutoplay from '../hooks/useInViewAutoplay.js'
@@ -260,23 +261,101 @@ const philosophyFactsDesktop = [
 
 const aboutImages = [
   { src: '/about-field.jpg', alt: 'Shay with her dog, Thor' },
-  { src: '/about-speaking.jpg', alt: 'Shay at the Maroon 5 concert in Israel' },
+  {
+    src: '/about-speaking.jpg',
+    alt: 'Shay at the Maroon 5 concert in Israel',
+    sensitive: true,
+  },
   { src: '/about-work.jpg', alt: 'Shay by the sea' },
 ]
+
+/* Rotating-border frame: a thin conic-gradient ring around the image that
+   sweeps to follow the cursor (angle from image center to pointer), in the
+   site's own monochrome tokens rather than the loud multicolor version this
+   was adapted from. Built with a plain CSS gradient-border trick (two
+   background layers, one clipped to padding-box, one to border-box) instead
+   of the shadcn/Next.js component it's inspired by, since this project uses
+   neither. */
+function FrameBorder({ children, className = '' }) {
+  const ref = useRef(null)
+
+  const handleMouseMove = (e) => {
+    const el = ref.current
+    if (!el) return
+    const rect = el.getBoundingClientRect()
+    const x = e.clientX - rect.left - rect.width / 2
+    const y = e.clientY - rect.top - rect.height / 2
+    el.style.setProperty('--rotation', `${Math.atan2(y, x)}rad`)
+  }
+
+  const handleMouseLeave = () => {
+    ref.current?.style.setProperty('--rotation', '0rad')
+  }
+
+  return (
+    <div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className={`border-[3px] border-transparent bg-origin-border transition-shadow duration-300 ${className}`}
+      style={{
+        backgroundImage:
+          'linear-gradient(var(--color-paper), var(--color-paper)), conic-gradient(from var(--rotation, 0rad), var(--color-ink) 0deg, var(--color-ink) 70deg, var(--color-line) 70deg, var(--color-line) 360deg)',
+        backgroundClip: 'padding-box, border-box',
+      }}
+    >
+      {children}
+    </div>
+  )
+}
 
 // Mobile: aspect-[398/266] w-full max-w-[398px] (398x266 landscape). Desktop: literal
 // w-[286px] h-[191px]. The desktop trio's own container (below) is widened from max-w-3xl
 // to fit 3x286px+gaps exactly — it would otherwise overflow max-w-3xl (768px vs the
 // 906px three 286px images + two 24px gaps actually need).
 function ImageSlot({ item }) {
+  const [revealOpen, setRevealOpen] = useState(false)
+
   return (
-    <div className="relative aspect-[398/266] w-full max-w-[398px] overflow-hidden bg-panel lg:aspect-auto lg:h-[191px] lg:w-[286px]">
-      <img
-        src={item.src}
-        alt={item.alt}
-        className="h-full w-full object-cover"
-      />
-    </div>
+    <FrameBorder>
+      <div className="relative aspect-[398/266] w-full max-w-[398px] overflow-hidden bg-panel lg:aspect-auto lg:h-[191px] lg:w-[286px]">
+        <img
+          src={item.src}
+          alt={item.alt}
+          className="h-full w-full object-cover"
+        />
+
+        {item.sensitive && (
+          <>
+            <button
+              type="button"
+              onClick={() => setRevealOpen(true)}
+              aria-label={`Reveal full image: ${item.alt}`}
+              className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-ink/0 px-4 text-center text-paper opacity-0 transition-all duration-300 hover:bg-ink/90 hover:opacity-100"
+            >
+              <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z" strokeLinecap="round" strokeLinejoin="round" />
+                <circle cx="12" cy="12" r="3" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M4 4l16 16" strokeLinecap="round" />
+              </svg>
+              <span className="font-sans text-sm font-semibold">Sensitive Content</span>
+              <span className="max-w-[220px] font-mono text-xs leading-relaxed text-paper/70">
+                This photo contains a level of excitement some viewers may find hard to believe.
+              </span>
+              <span className="mt-1 border border-paper px-4 py-1.5 font-mono text-xs uppercase tracking-[0.1em]">
+                See Now
+              </span>
+            </button>
+            <ImageLightbox
+              open={revealOpen}
+              onClose={() => setRevealOpen(false)}
+              src={item.src}
+              alt={item.alt}
+            />
+          </>
+        )}
+      </div>
+    </FrameBorder>
   )
 }
 
