@@ -128,12 +128,12 @@ export default function ProcessOrbit() {
   const active = activeIndex !== null ? steps[activeIndex] : null
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex w-full flex-col items-center">
       <p className="mb-8 text-center font-sans text-base font-medium leading-snug text-ink">
         Design is never really done.
       </p>
 
-      <div className="relative aspect-square w-full max-w-[380px]">
+      <div className="relative aspect-square w-full max-w-[480px]">
         <div
           className="absolute left-1/2 top-1/2 aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full border border-line-soft"
           style={{ width: `${RING_SIZE_PCT}%` }}
@@ -156,7 +156,7 @@ export default function ProcessOrbit() {
               aria-label={step.title}
               aria-pressed={isActive}
               onClick={() => handleSelect(i)}
-              className="absolute -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300"
+              className="group absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-opacity duration-300"
               style={{
                 left: `${50 + xPct}%`,
                 top: `${50 + yPct}%`,
@@ -165,11 +165,13 @@ export default function ProcessOrbit() {
               }}
             >
               <span
-                className={`flex h-11 w-11 items-center justify-center rounded-full border transition-colors duration-300 ${
-                  isActive ? 'border-ink bg-ink text-paper' : 'border-line bg-paper text-ink'
+                className={`flex h-14 w-14 items-center justify-center rounded-full border transition-all duration-300 group-hover:scale-110 group-hover:shadow-[0_6px_18px_rgba(0,0,0,0.15)] ${
+                  isActive
+                    ? 'border-ink bg-ink text-paper shadow-[0_6px_18px_rgba(0,0,0,0.15)]'
+                    : 'border-line bg-paper text-ink group-hover:border-ink'
                 }`}
               >
-                <Icon size={18} strokeWidth={1.5} />
+                <Icon size={22} strokeWidth={1.5} />
               </span>
             </button>
           )
@@ -183,19 +185,21 @@ export default function ProcessOrbit() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.4, ease, delay: 0.45 }}
-              className="absolute left-1/2 z-30 w-[90%] max-w-[320px] -translate-x-1/2 border border-line-soft bg-paper p-6 shadow-[0_12px_32px_rgba(0,0,0,0.1)]"
+              className="absolute left-1/2 z-30 w-[min(90%,340px)] -translate-x-1/2"
               style={{ top: `calc(${TOP_PCT}% + 40px)` }}
             >
-              <div className="absolute -top-3 left-1/2 h-3 w-px -translate-x-1/2 bg-line" />
-              <p className="font-mono text-xs uppercase tracking-[0.2em] text-dim">{active.number}</p>
-              <h4 className="mt-1 font-display text-2xl uppercase leading-none tracking-[0.05em] text-ink">
-                {active.title}
-              </h4>
-              <p className="mt-3 font-sans text-base font-medium leading-snug text-ink">{active.tagline}</p>
-              <p className="mt-3 font-mono text-sm leading-relaxed text-grey">{active.body}</p>
-              <div className="mt-4 border-t border-line-soft pt-4">
-                <p className="font-mono text-[11px] uppercase tracking-[0.15em] text-dim">What happens here</p>
-                <p className="mt-2 font-mono text-sm text-ink">{active.keywords.join(' · ')}</p>
+              <div className="mx-auto h-3 w-px bg-line" />
+              <div className="scroll-thin max-h-[260px] overflow-y-auto border border-line-soft bg-paper p-6 shadow-[0_12px_32px_rgba(0,0,0,0.1)]">
+                <p className="font-mono text-xs uppercase tracking-[0.2em] text-dim">{active.number}</p>
+                <h4 className="mt-1 font-display text-2xl uppercase leading-none tracking-[0.05em] text-ink">
+                  {active.title}
+                </h4>
+                <p className="mt-3 font-sans text-base font-medium leading-snug text-ink">{active.tagline}</p>
+                <p className="mt-3 font-mono text-sm leading-relaxed text-grey">{active.body}</p>
+                <div className="mt-4 border-t border-line-soft pt-4">
+                  <p className="font-mono text-[11px] uppercase tracking-[0.15em] text-dim">What happens here</p>
+                  <p className="mt-2 font-mono text-sm text-ink">{active.keywords.join(' · ')}</p>
+                </div>
               </div>
             </motion.div>
           )}
