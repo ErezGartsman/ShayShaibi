@@ -550,7 +550,7 @@ function AboutSection() {
           flow below both text blocks instead. Same label + Spline Sans Mono body
           typography as the three-image captions above, so this reads as a continuation
           of that same personal voice rather than a new section style. */}
-      <div className="mt-14 grid gap-10 md:mt-24 lg:grid-cols-[3fr_2fr] lg:gap-16">
+      <div className="mt-14 grid gap-10 md:mt-24 lg:grid-cols-[3fr_2fr] lg:items-center lg:gap-16">
         <div className="flex max-w-2xl flex-col gap-14">
           <Reveal amount={0.3}>
             <h3 className="mb-6 font-sans text-xl text-dim sm:text-2xl">Vision ↘</h3>
