@@ -335,22 +335,21 @@ function AboutSection() {
         </Reveal>
       </div>
 
-      {/* Desktop: kicker */}
-      {/* שינינו את ה-pl-[80px] ל-pl-[30px] כדי לקחת הכל שמאלה. אם חסר, תשנה ל-10px או 0 */}
-      <Reveal className="hidden md:block md:pl-[22px]"> 
-        {/* הוספנו font-bold כדי לעבות את המשקל של הכותרת */}
-        <h2 className="font-display font-semibold text-[clamp(1.3rem,2.4vw,1.8rem)] uppercase leading-none tracking-[0.25em] text-ink">
-          About Me
-        </h2>
-      </Reveal>
-
-      {/* Desktop: headline + philosophy on the left (own flex column, so the
-          paragraph shares the exact same left edge as the headline above it —
-          both are plain block children, no offsetting margins needed); the
-          process orbit fills the white space on the right, lg+ only, where
-          there's enough width for it. */}
+      {/* Desktop: kicker + headline + philosophy on the left, and the process orbit
+          on the right — both columns are direct children of this one grid row, so
+          "About Me" and the orbit's own heading start at the exact same top line
+          (the paragraph also shares the headline's left edge, both plain block
+          children of the same flex column, no offsetting margins needed). */}
       <div className="hidden gap-8 md:mt-12 md:grid lg:grid-cols-[3fr_2fr] lg:gap-16 md:pl-[22px]">
         <div className="flex flex-col gap-8">
+          {/* שינינו את ה-pl-[80px] ל-pl-[30px] כדי לקחת הכל שמאלה. אם חסר, תשנה ל-10px או 0 */}
+          <Reveal amount={0.3}>
+            {/* הוספנו font-bold כדי לעבות את המשקל של הכותרת */}
+            <h2 className="font-display font-semibold text-[clamp(1.3rem,2.4vw,1.8rem)] uppercase leading-none tracking-[0.25em] text-ink">
+              About Me
+            </h2>
+          </Reveal>
+
           <Reveal amount={0.3} className="min-w-0">
             <h3
               className="text-[64px] font-normal uppercase leading-[64px] text-ink"
@@ -383,7 +382,7 @@ function AboutSection() {
           </Reveal>
         </div>
 
-        <Reveal delay={0.2} amount={0.3} className="hidden lg:flex lg:items-center lg:justify-center">
+        <Reveal delay={0.2} amount={0.3} className="hidden lg:flex lg:items-start lg:justify-center">
           <ProcessOrbit />
         </Reveal>
       </div>

@@ -94,6 +94,7 @@ export default function ProcessOrbit() {
   const [activeIndex, setActiveIndex] = useState(null)
   const angleRef = useRef(0)
   const animationRef = useRef(null)
+  const rootRef = useRef(null)
 
   useEffect(() => {
     angleRef.current = angle
@@ -105,6 +106,19 @@ export default function ProcessOrbit() {
       setAngle((a) => (a + 0.2) % 360)
     }, 50)
     return () => clearInterval(id)
+  }, [activeIndex])
+
+  /* Clicking anywhere outside the diagram (the rest of the page) closes
+     whichever card is open, same as clicking its own node again. */
+  useEffect(() => {
+    if (activeIndex === null) return
+    const handleOutsideClick = (e) => {
+      if (rootRef.current && !rootRef.current.contains(e.target)) {
+        setActiveIndex(null)
+      }
+    }
+    document.addEventListener('mousedown', handleOutsideClick)
+    return () => document.removeEventListener('mousedown', handleOutsideClick)
   }, [activeIndex])
 
   const handleSelect = (i) => {
@@ -128,7 +142,7 @@ export default function ProcessOrbit() {
   const active = activeIndex !== null ? steps[activeIndex] : null
 
   return (
-    <div className="flex w-full flex-col items-center">
+    <div ref={rootRef} className="flex w-full flex-col items-center">
       <p className="mb-8 text-center font-sans text-base font-medium leading-snug text-ink">
         Design is never really done.
       </p>
@@ -183,7 +197,7 @@ export default function ProcessOrbit() {
               key={active.number}
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
+              exit={{ opacity: 0, y: -8, transition: { duration: 0.15, ease } }}
               transition={{ duration: 0.4, ease, delay: 0.45 }}
               className="absolute left-1/2 z-30 w-[min(90%,340px)] -translate-x-1/2"
               style={{ top: `calc(${TOP_PCT}% + 40px)` }}
