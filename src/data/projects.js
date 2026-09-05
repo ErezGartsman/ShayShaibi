@@ -9,8 +9,8 @@ const entries = [
   {
     slug: 'smartrip',
     n: '02',
-    title: 'SMARTRIP',
-    homeStatement: 'ACTIONABLE TRAVEL PLANS FROM SAVED VIDEOS',
+    title: 'REBORN',
+    homeStatement: 'FROM HEARTBREAK TO SELF-DISCOVERY',
     homeMedia: 'FULL-BLEED SHOWREEL — MAGIC URL SCREEN RECORDING',
     question: 'What if a saved video could plan the trip?',
     heroMedia: 'FULL-BLEED VIDEO — MAGIC URL: PASTE TO ITINERARY',
@@ -112,8 +112,8 @@ const entries = [
   {
     slug: 'nexus',
     n: '01',
-    title: 'NEXUS',
-    homeStatement: 'ACTIONABLE INSIGHTS AT COMMUNITY SCALE',
+    title: 'RADAR',
+    homeStatement: 'TURNING PROFESSIONAL NOISE INTO YOUR NEXT MOVE',
     homeMedia: 'FULL-BLEED STILL — NEXUS PUBLISH VERDICT SCREEN',
     question: 'WHAT HAPPENS WHEN REAL RELATIONSHIPS ARE REDUCED TO ROWS IN A SPREADSHEET?',
     heroMedia: 'FULL-BLEED IMAGE — NEXUS PUBLISH VERDICT SCREEN',
