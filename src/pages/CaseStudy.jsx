@@ -343,10 +343,7 @@ export default function CaseStudy() {
     <article key={slug}>
       {/* ── Hero: full-bleed video plane, title + meta bottom-anchored ─── */}
       <header className="relative flex h-[80svh] w-full flex-col items-center justify-end overflow-clip px-[16px] pt-[142px] pb-[60px] md:min-h-screen md:px-[30px] md:pb-[72px] xl:px-[80px]">
-        <div
-          className="absolute inset-0 z-0 flex items-center justify-center"
-          style={{ transform: 'perspective(1200px) rotateY(180deg)' }}
-        >
+        <div className="absolute inset-0 z-0 flex items-center justify-center">
           <video
             src={`/${project.slug}-video.mp4`}
             autoPlay
