@@ -385,6 +385,7 @@ const aboutColumns = [
 
 const education = [
   ['2020 — 2025', 'Visual Communication & Education', 'University of Haifa. Studied Visual Communication and Education over five years, developing a strong foundation in visual thinking, communication, design, and understanding how people learn and interact with information.'],
+  ['2025 — 2026', 'UX Specification & Design', 'Create Future. Studied user experience specification and design, covering research methods, information architecture, prototyping, and usability testing, with a focus on practical, portfolio-ready UX work.'],
 ]
 
 function AboutSection() {
